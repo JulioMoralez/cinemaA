@@ -1,0 +1,60 @@
+<div *ngIf="!editor">
+<table *ngIf="userService.user">
+<tr>
+  <th>Id</th>
+  <th>username</th>
+  <th>name</th>
+  <th>email</th>
+</tr>
+<td>{{userService.user.id}}</td>
+<td>{{userService.user.username}}</td>
+<td>{{userService.user.name}}</td>
+<td>{{userService.user.email}}</td>
+<td *ngFor="let role of userService.user.roles"><div *ngIf="role.check">{{role.runame}}</div></td>
+
+</table>
+<button (click)="updateUserForm()">Изменить</button>
+</div>
+<p>
+</p>
+<div *ngIf="editor">
+  <input type="text" placeholder="id" [(ngModel)]="userForm.id">
+  <input type="text" placeholder="Имя" [(ngModel)]="userForm.name">
+  <input type="text" placeholder="Почта" [(ngModel)]="userForm.email">
+  <div *ngFor="let role of userForm.roles">
+    <div>{{role.runame}} <input type="checkbox" [checked]="role.check" (change)="onChange(role.name, role.check)"/></div>
+
+  </div>
+  <button (click)="updateUser()">Изменить</button>
+  <button (click)="breakUser()">Отмена</button>
+</div>
+<!--{{dt | date:"longDate"}}-->
+<!--<p></p>-->
+
+<!--<div>-->
+<!--  <input type="text" [(ngModel)]="searchString">-->
+<!--</div>-->
+<!--<table *ngIf="userService.users.length; else noUsers">-->
+
+
+
+<!--<tr>-->
+<!--  <th>Id</th>-->
+<!--  <th>Name</th>-->
+<!--  <th>Age</th>-->
+<!--  <th></th>-->
+<!--</tr>-->
+<!--  <tr *ngFor="let user of userService.users | userFilter: searchString">-->
+<!--    <td>{{user.id}} <label>-->
+<!--      <input type="checkbox" [checked]="user.active" (change)="onChange(user.id)"/>-->
+<!--    </label></td>-->
+<!--    <td>{{user.name}}</td>-->
+<!--    <td>{{user.age}}</td>-->
+<!--    <td><button (click)="deleteUser(user.id)" class="btn btn-primary">Delete</button> </td>-->
+<!--  </tr>-->
+<!--</table>-->
+
+<!--<ng-template #noUsers>-->
+<!--  <h1>No users</h1>-->
+<!--</ng-template>-->
+

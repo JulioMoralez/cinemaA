@@ -1,0 +1,26 @@
+<header>
+  <nav  class="navbar navbar-expand-lg navbar-light bg-light">
+
+    <ul class="navbar-nav mr-auto">
+<!--      <li><a *ngIf="loginService.isUserLoggedIn()" routerLink="/" class="nav-link">View Employees</a></li>-->
+<!--      <li><a *ngIf="loginService.isUserLoggedIn()" routerLink="/addemployee" class="nav-link">Add New Employee</a></li>-->
+<!--      <li><a *ngIf="!loginService.isUserLoggedIn()" routerLink="/login" class="nav-link">Login</a></li>-->
+<!--      <li><a *ngIf="loginService.isUserLoggedIn()" routerLink="/logout" class="nav-link">LogOut</a></li>-->
+      <form class="form-inline my-2 my-lg-0">
+        <input [(ngModel)]="username" name="username" class="form-control mr-sm-2" *ngIf="!authService.isUserLoggedIn()" type="text" placeholder="логин" aria-label="Search" >
+        <input [(ngModel)]="password" name="password" class="form-control mr-sm-2" *ngIf="!authService.isUserLoggedIn()" type="text" placeholder="пароль" aria-label="Search">
+        <button class="btn btn-outline-success my-2 my-sm-0 mx-1" *ngIf="!authService.isUserLoggedIn()" type="submit" (click)="login()">Войти</button>
+        <button class="btn btn-outline-success my-2 my-sm-0 mx-1" *ngIf="!authService.isUserLoggedIn()" type="submit" (click)="register()">Регистрация</button>
+        <button class="btn btn-outline-success my-2 my-sm-0 mx-1" *ngIf="authService.isUserLoggedIn()" type="submit" (click)="logout()">Выйти</button>
+      </form>
+
+      <div *ngIf="userService.user">
+        <a routerLink="/user">{{userService.user.username}}</a>
+      </div>
+      <button class="btn btn-outline-success my-2 my-sm-0 mx-1" type="submit" routerLink="/movies">Фильмы</button>
+    </ul>
+
+
+  </nav>
+
+</header>
