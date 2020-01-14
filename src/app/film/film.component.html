@@ -6,29 +6,32 @@
 </div>
 
 <div *ngIf="editor">
-  <input type="text" placeholder="id" [(ngModel)]="filmFrom.id">
-  <input type="text" placeholder="Имя" [(ngModel)]="filmFrom.name">
-  <input type="text" placeholder="Почта" [(ngModel)]="filmFrom.year">
-  <input type="text" placeholder="Почта" [(ngModel)]="filmFrom.length">
-  <input type="text" placeholder="Почта" [(ngModel)]="filmFrom.rating">
-  <input type="text" placeholder="Почта" [(ngModel)]="filmFrom.picPath">
+  <input type="text" placeholder="id" [(ngModel)]="filmForm.id">
+  <input type="text" placeholder="Имя" [(ngModel)]="filmForm.name">
+  <input type="text" placeholder="Почта" [(ngModel)]="filmForm.year">
+  <input type="text" placeholder="Почта" [(ngModel)]="filmForm.length">
+  <input type="text" placeholder="Почта" [(ngModel)]="filmForm.rating">
+  <input type="text" placeholder="Почта" [(ngModel)]="filmForm.picPath">
 <!--  <div *ngFor="let role of userForm.roles">-->
 <!--    <div>{{role.runame}} <input type="checkbox" [checked]="role.check" (change)="onChange(role.name, role.check)"/></div>-->
 
 <!--  </div>-->
-  <button (click)="updateFilm()">Изменить</button>
-  <button (click)="addFilm()">Добавить</button>
-  <button (click)="breakFilm()">Отмена</button>
+  <button (click)="updateForm()">Изменить</button>
+  <button (click)="addForm()">Добавить</button>
+  <button (click)="breakForm()">Отмена</button>
 </div>
 
-<div *ngFor="let film of filmService.movies">
+<img src="{{image1}}"  alt="124">
+
+
+<div *ngFor="let value of filmService.films">
   <div class="card" style="width: 18rem;">
-    <img src="..." class="card-img-top" alt="...">
+    <img src="" class="card-img-top" alt="...">
     <div class="card-body">
-      <h5 class="card-title">{{film.name}}, {{film.year}}</h5>
-      <p class="card-text">{{film.rating}}</p>
-      <a class="btn btn-primary" (click)="updateFilmForm(film.id)">Редактировать</a>
-      <a class="btn btn-primary" (click)="delete(film.id)">Удалить</a>
+      <h5 class="card-title">{{value.name}}, {{value.year}}</h5>
+      <p class="card-text">{{value.rating}}</p>
+      <a class="btn btn-primary" (click)="openEditForm(value.id)">Редактировать</a>
+      <a class="btn btn-primary" (click)="delete(value.id)">Удалить</a>
     </div>
   </div>
 </div>

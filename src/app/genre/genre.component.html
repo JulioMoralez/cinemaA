@@ -1,0 +1,29 @@
+<div *ngIf="errorMessage" class="alert alert-danger" role="alert">
+  {{errorMessage}}
+</div>
+<div *ngIf="confirmMessage" class="alert alert-success" role="alert">
+  {{confirmMessage}}
+</div>
+
+<div *ngIf="editor">
+  <input type="text" placeholder="id" [(ngModel)]="form.id">
+  <!--  <div *ngFor="let role of userForm.roles">-->
+  <!--    <div>{{role.runame}} <input type="checkbox" [checked]="role.check" (change)="onChange(role.name, role.check)"/></div>-->
+
+  <!--  </div>-->
+  <button (click)="updateForm()">Изменить</button>
+  <button (click)="addForm()">Добавить</button>
+  <button (click)="breakForm()">Отмена</button>
+</div>
+
+<div *ngFor="let value of genreService.genres">
+  <div class="card" style="width: 18rem;">
+    <img src="..." class="card-img-top" alt="...">
+    <div class="card-body">
+      <h5 class="card-title">{{value.id}}</h5>
+      <p class="card-text">text text</p>
+      <a class="btn btn-primary" (click)="openEditForm(value.id)">Редактировать</a>
+      <a class="btn btn-primary" (click)="delete(value.id)">Удалить</a>
+    </div>
+  </div>
+</div>

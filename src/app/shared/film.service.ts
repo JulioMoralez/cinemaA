@@ -2,13 +2,9 @@ import {Injectable, NgModule} from '@angular/core';
 import {HttpClient, HttpHeaders, HttpParams} from '@angular/common/http';
 import {Observable} from 'rxjs';
 import {tap} from 'rxjs/operators';
+import {Genre} from './genre.service';
 
-export class Genre {
-  constructor(
-    public id: number,
-    public name: string,
-  ) {}
-}
+
 
 export class Film {
 
@@ -28,30 +24,27 @@ export class Film {
 })
 export class FilmService {
 
+  public url = 'http://localhost:8080/film';
   public film: Film;
-  public movies: Film[];
+  public films: Film[];
 
   constructor(private http: HttpClient) { }
 
 
-  getFilm(id: string): Observable<Film> {
-    return this.http.get<Film>('http://localhost:8080/film/' + id).pipe(tap(x => this.film = x));
+  getE(id: string): Observable<Film> {
+    return this.http.get<Film>(this.url + '/' + id).pipe(tap(x => this.film = x));
   }
 
-  getMovies(): Observable<Film[]> {
-    return this.http.get<Film[]>('http://localhost:8080/movies/').pipe(tap(x => this.movies = x));
+  getEs(): Observable<Film[]> {
+    return this.http.get<Film[]>(this.url + 's/').pipe(tap(x => this.films = x));
   }
 
-  deleteFilm(id: number): Observable<Film> {
-    return this.http.delete<Film>('http://localhost:8080/film/' + id);
+  delete(id: number): Observable<Film> {
+    return this.http.delete<Film>(this.url + '/' + id);
   }
 
-  addOrUpdateFilm(film: Film) {
-    // if (film.id !== null) {
-    //   return this.http.post<Film>('http://localhost:8080/film/' + film.id, film);
-    // } else {
-      return this.http.post<Film>('http://localhost:8080/film/', film);
-    // }
+  addOrUpdate(film: Film) {
+      return this.http.post<Film>(this.url + '/', film);
   }
 
 }

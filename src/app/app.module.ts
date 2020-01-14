@@ -11,12 +11,24 @@ import {Routes, RouterModule} from '@angular/router';
 import { FooterComponent } from './footer/footer.component';
 import { RegistrationComponent } from './registration/registration.component';
 import { FilmComponent } from './film/film.component';
+import { GenreComponent } from './genre/genre.component';
+import { MessageComponent } from './message/message.component';
+import { HallComponent } from './hall/hall.component';
+import { OrderComponent } from './order/order.component';
+import { PlaceComponent } from './place/place.component';
+import { ScheduleComponent } from './schedule/schedule.component';
 
 const appRoutes: Routes = [
   { path: '', component: FooterComponent},
   { path: 'user', component: UserComponent},
   { path: 'registration', component: RegistrationComponent},
-  { path: 'movies', component: FilmComponent},
+  { path: 'films', component: FilmComponent},
+  { path: 'genres', component: GenreComponent},
+  { path: 'halls', component: HallComponent},
+  { path: 'messages', component: MessageComponent},
+  { path: 'orders', component: OrderComponent},
+  { path: 'places', component: PlaceComponent},
+  { path: 'schedules', component: ScheduleComponent},
   { path: '**', component: FooterComponent },
 ];
 
@@ -29,6 +41,12 @@ const appRoutes: Routes = [
     FooterComponent,
     RegistrationComponent,
     FilmComponent,
+    GenreComponent,
+    MessageComponent,
+    HallComponent,
+    OrderComponent,
+    PlaceComponent,
+    ScheduleComponent,
   ],
   imports: [
     BrowserModule,

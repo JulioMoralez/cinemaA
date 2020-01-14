@@ -1,6 +1,5 @@
 import { Component, OnInit } from '@angular/core';
 import {Film, FilmService} from '../shared/film.service';
-import {toNumbers} from '@angular/compiler-cli/src/diagnostics/typescript_version';
 
 @Component({
   selector: 'app-film',
@@ -9,55 +8,53 @@ import {toNumbers} from '@angular/compiler-cli/src/diagnostics/typescript_versio
 })
 export class FilmComponent implements OnInit {
 
-  filmFrom: Film = {id: null, name: null, year: null, genres: null, length: null, picPath: null, rating: null};
+  filmForm: Film = {id: null, name: null, year: null, genres: null, length: null, picPath: null, rating: null};
   editor: boolean;
   errorMessage: string;
   confirmMessage: string;
 
+  image1 = '//img//1.jpg';
+
   constructor(private filmService: FilmService) { }
 
   ngOnInit() {
-    this.filmService.getMovies().subscribe();
+    this.filmService.getEs().subscribe(value => console.log(value));
   }
 
-  getFilm() {
-    this.filmService.getMovies().subscribe(value => console.log(value));
-  }
-
-  updateFilmForm(id: number) {
-    const film = this.filmService.movies.find(value => value.id === id);
-    this.filmFrom.id = film.id;
-    this.filmFrom.name = film.name;
-    this.filmFrom.year = film.year;
-    this.filmFrom.genres = film.genres;
-    this.filmFrom.length = film.length;
-    this.filmFrom.picPath = film.picPath;
-    this.filmFrom.rating = film.rating;
+  openEditForm(id: number) {
+    const film = this.filmService.films.find(value => value.id === id);
+    this.filmForm.id = film.id;
+    this.filmForm.name = film.name;
+    this.filmForm.year = film.year;
+    this.filmForm.genres = film.genres;
+    this.filmForm.length = film.length;
+    this.filmForm.picPath = film.picPath;
+    this.filmForm.rating = film.rating;
     this.editor = true;
     this.errorMessage = null;
     this.confirmMessage = null;
   }
 
-  updateFilm() {
-    this.addOrUpdateFilm();
+  updateForm() {
+    this.addOrUpdateForm();
   }
 
-  addFilm() {
-    this.filmFrom.id = null;
-    this.addOrUpdateFilm();
+  addForm() {
+    this.filmForm.id = null;
+    this.addOrUpdateForm();
   }
 
-  addOrUpdateFilm() {
-    this.filmService.addOrUpdateFilm(this.filmFrom).subscribe(value => {
+  addOrUpdateForm() {
+    this.filmService.addOrUpdate(this.filmForm).subscribe(value => {
       this.confirmMessage = null;
-      for (let i = 0; i < this.filmService.movies.length; i++) {
-        if (this.filmService.movies[i].id === value.id) {
-          this.filmService.movies[i] = value;
+      for (let i = 0; i < this.filmService.films.length; i++) {
+        if (this.filmService.films[i].id === value.id) {
+          this.filmService.films[i] = value;
           this.confirmMessage = 'Данные фильма изменены';
         }
       }
       if (this.confirmMessage === null) {
-        this.filmService.movies.push(value);
+        this.filmService.films.push(value);
         this.confirmMessage = 'Фильм добавлен';
       }
     });
@@ -65,23 +62,23 @@ export class FilmComponent implements OnInit {
   }
 
 
-  breakFilm() {
+  breakForm() {
     this.editor = false;
     this.errorMessage = null;
     this.confirmMessage = null;
   }
 
   delete(id: number) {
-    this.filmService.deleteFilm(id).subscribe(value => {
+    this.filmService.delete(id).subscribe(value => {
       if (value.id === -1) {
         this.errorMessage = 'Удаление не произведено';
         this.confirmMessage = null;
       } else {
         this.errorMessage = null;
         this.confirmMessage = 'Фильм удален';
-        for (let i = 0; i < this.filmService.movies.length; i++) {
-          if (this.filmService.movies[i].id === id) {
-            this.filmService.movies.splice(i, 1);
+        for (let i = 0; i < this.filmService.films.length; i++) {
+          if (this.filmService.films[i].id === id) {
+            this.filmService.films.splice(i, 1);
             break;
           }
         }
