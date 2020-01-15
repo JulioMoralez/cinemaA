@@ -1,5 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import {Film, FilmService} from '../shared/film.service';
+import {GenreService} from '../shared/genre.service';
 
 @Component({
   selector: 'app-film',
@@ -15,7 +16,7 @@ export class FilmComponent implements OnInit {
 
   image1 = '//img//1.jpg';
 
-  constructor(private filmService: FilmService) { }
+  constructor(private filmService: FilmService, private genreService: GenreService) { }
 
   ngOnInit() {
     this.filmService.getEs().subscribe(value => console.log(value));
@@ -31,6 +32,11 @@ export class FilmComponent implements OnInit {
     this.filmForm.picPath = film.picPath;
     this.filmForm.rating = film.rating;
     this.editor = true;
+    // if (this.genreService.genres === null) {
+    //   this.genreService.getEs().subscribe(value => {
+    //
+    //   });
+    // }
     this.errorMessage = null;
     this.confirmMessage = null;
   }

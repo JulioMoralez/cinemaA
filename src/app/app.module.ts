@@ -17,9 +17,10 @@ import { HallComponent } from './hall/hall.component';
 import { OrderComponent } from './order/order.component';
 import { PlaceComponent } from './place/place.component';
 import { ScheduleComponent } from './schedule/schedule.component';
+import { HelloComponent } from './hello/hello.component';
 
 const appRoutes: Routes = [
-  { path: '', component: FooterComponent},
+  { path: '', component: HelloComponent},
   { path: 'user', component: UserComponent},
   { path: 'registration', component: RegistrationComponent},
   { path: 'films', component: FilmComponent},
@@ -29,7 +30,7 @@ const appRoutes: Routes = [
   { path: 'orders', component: OrderComponent},
   { path: 'places', component: PlaceComponent},
   { path: 'schedules', component: ScheduleComponent},
-  { path: '**', component: FooterComponent },
+  { path: '**', component: HelloComponent },
 ];
 
 @NgModule({
@@ -47,6 +48,7 @@ const appRoutes: Routes = [
     OrderComponent,
     PlaceComponent,
     ScheduleComponent,
+    HelloComponent,
   ],
   imports: [
     BrowserModule,

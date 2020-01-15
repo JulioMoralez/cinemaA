@@ -8,7 +8,7 @@ import {Schedule, ScheduleService} from '../shared/schedule.service';
 })
 export class ScheduleComponent implements OnInit {
 
-  form: Schedule = {id: null};
+  form: Schedule = {id: null, film: null, hall: null, time: null, date: null, price: null};
   editor: boolean;
   errorMessage: string;
   confirmMessage: string;

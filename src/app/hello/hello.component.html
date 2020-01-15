@@ -1,0 +1,20 @@
+<table>
+  <tr>
+    <td *ngFor="let day of utilService.myDays">
+      <div class="card" style="width: 12rem;">
+        <div class="card-body">
+          <a (click)="selectDay(day.dayOfMonth, day.dayOfWeek)" class="btn btn-primary">{{day.dayOfMonth}} {{day.monthName}}</a>
+<!--          <h5 class="card-title">{{day.dayOfWeekName}}</h5>-->
+          <p class="card-text">{{day.dayOfWeekName}}</p>
+        </div>
+      </div>
+    </td>
+  </tr>
+</table>
+
+<div *ngIf="scheduleService.schedulesToday">
+  <div *ngFor="let schedule of scheduleService.schedulesToday">
+    <h3>{{schedule.date}} {{schedule.film.name}}</h3>
+  </div>
+</div>
+

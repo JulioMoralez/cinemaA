@@ -7,6 +7,7 @@ export class Genre {
   constructor(
     public id: number,
     public name: string,
+    public check: boolean,
   ) {}
 }
 
@@ -17,8 +18,8 @@ export class Genre {
 export class GenreService {
 
   public url = 'http://localhost:8080/genre';
-  public genre: Genre;
-  public genres: Genre[];
+  public genre: Genre = null;
+  public genres: Genre[] = null;
 
   constructor(private http: HttpClient) { }
 

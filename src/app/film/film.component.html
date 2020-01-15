@@ -8,10 +8,14 @@
 <div *ngIf="editor">
   <input type="text" placeholder="id" [(ngModel)]="filmForm.id">
   <input type="text" placeholder="Имя" [(ngModel)]="filmForm.name">
-  <input type="text" placeholder="Почта" [(ngModel)]="filmForm.year">
-  <input type="text" placeholder="Почта" [(ngModel)]="filmForm.length">
-  <input type="text" placeholder="Почта" [(ngModel)]="filmForm.rating">
-  <input type="text" placeholder="Почта" [(ngModel)]="filmForm.picPath">
+  <input type="text" placeholder="Год" [(ngModel)]="filmForm.year">
+  <input type="text" placeholder="Длительность" [(ngModel)]="filmForm.length">
+  <input type="text" placeholder="Оценка" [(ngModel)]="filmForm.rating">
+  <input type="text" placeholder="Картинка" [(ngModel)]="filmForm.picPath">
+    <div *ngFor="let genre of genreService.genres">
+      <div>{{genre.name}}</div>
+
+    </div>
 <!--  <div *ngFor="let role of userForm.roles">-->
 <!--    <div>{{role.runame}} <input type="checkbox" [checked]="role.check" (change)="onChange(role.name, role.check)"/></div>-->
 
@@ -21,7 +25,7 @@
   <button (click)="breakForm()">Отмена</button>
 </div>
 
-<img src="{{image1}}"  alt="124">
+<!--<img src="{{image1}}"  alt="124">-->
 
 
 <div *ngFor="let value of filmService.films">
