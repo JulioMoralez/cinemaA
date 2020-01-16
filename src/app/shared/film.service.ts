@@ -27,7 +27,7 @@ export class FilmService {
   public url = 'http://localhost:8080/film';
   public film: Film = null;
   public films: Film[] = null;
-  public filmsDay: Film[] = null;
+  public filmsDay: Film[][] = [];
 
   constructor(private http: HttpClient) { }
 
@@ -48,12 +48,9 @@ export class FilmService {
       return this.http.post<Film>(this.url + '/', film);
   }
 
-  getFilmsDay(day: string): Observable<Film[]> {
+  getFilmsDay(day: number): Observable<Film[]> {
     return this.http.get<Film[]>(this.url + 's/day/' + day).pipe(tap(x => {
-      this.filmsDay = x;
-      console.log('1');
-      console.log(x);
-      console.log('2');
+      this.filmsDay[day] = x;
     }));
   }
 

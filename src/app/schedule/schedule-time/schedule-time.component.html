@@ -1,0 +1,2 @@
+<div *ngIf="(time % 60) < 10; else elseCon">{{(time - time % 60) / 60}}:0{{time % 60}}</div>
+<ng-template #elseCon>{{(time - time % 60) / 60}}:{{time % 60}}</ng-template>

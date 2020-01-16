@@ -22,18 +22,11 @@
 
 <!--<img src="{{image1}}"  alt="124">-->
 
-
-<div *ngFor="let value of filmService.films">
-  <div class="card" style="width: 18rem;">
-    <img src="" class="card-img-top" alt="...">
-    <div class="card-body">
-      <h5 class="card-title">{{value.name}}, {{value.year}}</h5>
-      <p class="card-text">{{value.rating}}</p>
-      <div *ngFor="let genre of value.genres; let isLast=last">
-        <div>{{genre.name}}{{isLast ? '' : ', '}}</div>
-      </div>
-      <a class="btn btn-primary" (click)="openEditForm(value.id)">Редактировать</a>
-      <a class="btn btn-primary" (click)="delete(value.id)">Удалить</a>
-    </div>
+<div  class="card-columns">
+  <div *ngFor="let value of filmService.films" >
+    <app-film-form [value]="value"></app-film-form>
+    <a class="btn btn-primary" (click)="openEditForm(value.id)">Редактировать</a>
+    <a class="btn btn-primary" (click)="delete(value.id)">Удалить</a>
   </div>
 </div>
+

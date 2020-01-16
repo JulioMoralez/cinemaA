@@ -18,6 +18,8 @@ import { OrderComponent } from './order/order.component';
 import { PlaceComponent } from './place/place.component';
 import { ScheduleComponent } from './schedule/schedule.component';
 import { HelloComponent } from './hello/hello.component';
+import { FilmFormComponent } from './film/film-form/film-form.component';
+import { ScheduleTimeComponent } from './schedule/schedule-time/schedule-time.component';
 
 const appRoutes: Routes = [
   { path: '', component: HelloComponent},
@@ -49,6 +51,8 @@ const appRoutes: Routes = [
     PlaceComponent,
     ScheduleComponent,
     HelloComponent,
+    FilmFormComponent,
+    ScheduleTimeComponent,
   ],
   imports: [
     BrowserModule,

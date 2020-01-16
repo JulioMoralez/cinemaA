@@ -12,9 +12,31 @@
   </tr>
 </table>
 
-<div *ngIf="scheduleService.schedulesToday">
-  <div *ngFor="let schedule of scheduleService.schedulesToday">
-    <h3>{{schedule.date}} {{schedule.film.name}}</h3>
+<div  class="card-columns">
+  <div *ngIf="bestToday.length !== 0; else noFilms">
+    <h3>Лучшее сегодня</h3>
+    <div *ngFor="let film of bestToday" >
+      <app-film-form [value]="film"></app-film-form>
+    </div>
   </div>
+  <ng-template #noFilms><h3>Нет сеансов сегодня</h3></ng-template>
+</div>
+
+<div *ngIf="filmService.filmsDay[selectedDay]">
+  <table class="table">
+    <tr>
+    <span *ngFor="let film of filmService.filmsDay[selectedDay]" >
+      <td>
+      {{film.name}}
+          <div *ngFor="let schedule of scheduleService.schedulesToday" >
+            <span *ngIf="schedule.film.id === film.id">
+                <app-schedule-time [time]="schedule.time"></app-schedule-time>
+            </span>
+          </div>
+        </td>
+
+    </span>
+  </tr>
+  </table>
 </div>
 

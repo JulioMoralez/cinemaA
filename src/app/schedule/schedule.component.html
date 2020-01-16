@@ -60,16 +60,18 @@
   <button (click)="breakForm()">Отмена</button>
 </div>
 
-<div *ngFor="let value of scheduleService.schedules">
-  <div class="card">
-    <div class="card-body">
-      <h5 class="card-title">Фильм {{value.film.name}}</h5>
-      <p class="card-text">Зал {{value.hall.name}}</p>
-      <p class="card-text"> Стоимость {{value.price}}</p>
-      <p class="card-text">Дата {{value.date}}</p>
-      <p class="card-text">Время {{(value.time - value.time % 60) / 60}}:{{value.time % 60}}</p>
-      <a class="btn btn-primary" (click)="openEditForm(value.id)">Редактировать</a>
-      <a class="btn btn-primary" (click)="delete(value.id)">Удалить</a>
+<div  class="card-columns">
+  <div *ngFor="let value of scheduleService.schedules">
+    <div class="card">
+      <div class="card-body">
+        <h5 class="card-title">Фильм {{value.film.name}}</h5>
+        <p class="card-text">Зал {{value.hall.name}}</p>
+        <p class="card-text"> Стоимость {{value.price}}</p>
+        <p class="card-text">Дата {{value.date}}</p>
+        <app-schedule-time [time]="value.time"></app-schedule-time>
+        <a class="btn btn-primary m-1" (click)="openEditForm(value.id)">Редактировать</a>
+        <a class="btn btn-primary m-1" (click)="delete(value.id)">Удалить</a>
+      </div>
     </div>
   </div>
 </div>

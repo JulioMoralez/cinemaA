@@ -15,7 +15,7 @@
       </form>
 
       <div *ngIf="userService.user">
-        <a routerLink="/user">{{userService.user.username}}</a>
+        <a class="navbar-text" routerLink="/user">{{userService.user.username}}</a>
       </div>
       <button class="btn btn-outline-success my-2 my-sm-0 mx-1" type="submit" routerLink="/films">Фильмы</button>
       <button class="btn btn-outline-success my-2 my-sm-0 mx-1" type="submit" routerLink="/genres">Жанры</button>
@@ -24,6 +24,7 @@
       <button class="btn btn-outline-success my-2 my-sm-0 mx-1" type="submit" routerLink="/orders">Заказы</button>
       <button class="btn btn-outline-success my-2 my-sm-0 mx-1" type="submit" routerLink="/places">Места</button>
       <button class="btn btn-outline-success my-2 my-sm-0 mx-1" type="submit" routerLink="/schedules">Расписание</button>
+      <button class="btn btn-outline-success my-2 my-sm-0 mx-1" type="submit" routerLink="/">Главная</button>
     </ul>
 
 

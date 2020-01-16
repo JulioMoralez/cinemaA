@@ -1,7 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import {ScheduleService} from '../shared/schedule.service';
 import {UtilService} from '../shared/util.service';
-import {FilmService} from '../shared/film.service';
+import {Film, FilmService} from '../shared/film.service';
 
 @Component({
   selector: 'app-hello',
@@ -9,6 +9,9 @@ import {FilmService} from '../shared/film.service';
   styleUrls: ['./hello.component.scss']
 })
 export class HelloComponent implements OnInit {
+
+  selectedDay: number;
+  bestToday: Film[] = [];
 
   constructor(private scheduleService: ScheduleService, private utilService: UtilService, private filmService: FilmService) { }
 
@@ -18,8 +21,19 @@ export class HelloComponent implements OnInit {
 
   }
 
+  getBestToday(filmToday: Film[]) {
+    this.bestToday = filmToday.sort((a, b) => b.rating - a.rating).slice(0, 2);
+
+  }
+
   selectDay(day: number, dayOfWeek: number) {
     this.scheduleService.getSchedulesToday(day);
-    this.filmService.getFilmsDay(dayOfWeek.toString()).subscribe();
+    this.selectedDay = dayOfWeek;
+    if (this.filmService.filmsDay[dayOfWeek] === undefined) {
+        this.filmService.getFilmsDay(dayOfWeek).subscribe(value => this.getBestToday(value));
+    } else {
+      this.getBestToday(this.filmService.filmsDay[dayOfWeek]);
+    }
+
   }
 }
