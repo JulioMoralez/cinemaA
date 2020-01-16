@@ -2,6 +2,7 @@ import {Injectable, NgModule} from '@angular/core';
 import {HttpClient, HttpHeaders, HttpParams} from '@angular/common/http';
 import {Observable} from 'rxjs';
 import {tap} from 'rxjs/operators';
+import {Film} from './film.service';
 
 export class Place {
   constructor(
@@ -16,8 +17,8 @@ export class Place {
 export class PlaceService {
 
   public url = 'http://localhost:8080/place';
-  public place: Place;
-  public places: Place[];
+  public place: Place = null;
+  public places: Place[] = null;
 
   constructor(private http: HttpClient) { }
 

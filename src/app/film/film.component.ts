@@ -1,6 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import {Film, FilmService} from '../shared/film.service';
-import {GenreService} from '../shared/genre.service';
+import {Genre, GenreService} from '../shared/genre.service';
 
 @Component({
   selector: 'app-film',
@@ -9,7 +9,7 @@ import {GenreService} from '../shared/genre.service';
 })
 export class FilmComponent implements OnInit {
 
-  filmForm: Film = {id: null, name: null, year: null, genres: null, length: null, picPath: null, rating: null};
+  form: Film = {id: null, name: null, year: null, genres: null, length: null, picPath: null, rating: null};
   editor: boolean;
   errorMessage: string;
   confirmMessage: string;
@@ -19,26 +19,48 @@ export class FilmComponent implements OnInit {
   constructor(private filmService: FilmService, private genreService: GenreService) { }
 
   ngOnInit() {
-    this.filmService.getEs().subscribe(value => console.log(value));
+    this.filmService.getEs().subscribe();
   }
 
   openEditForm(id: number) {
     const film = this.filmService.films.find(value => value.id === id);
-    this.filmForm.id = film.id;
-    this.filmForm.name = film.name;
-    this.filmForm.year = film.year;
-    this.filmForm.genres = film.genres;
-    this.filmForm.length = film.length;
-    this.filmForm.picPath = film.picPath;
-    this.filmForm.rating = film.rating;
+    this.form.id = film.id;
+    this.form.name = film.name;
+    this.form.year = film.year;
+    this.form.length = film.length;
+    this.form.picPath = film.picPath;
+    this.form.rating = film.rating;
     this.editor = true;
-    // if (this.genreService.genres === null) {
-    //   this.genreService.getEs().subscribe(value => {
-    //
-    //   });
-    // }
+    if (this.genreService.genres === null) {
+      this.genreService.getEs().subscribe(value => {
+        this.genreService.genres = value;
+        this.fillGenres(film.genres);
+      });
+    } else {
+      this.fillGenres(film.genres);
+    }
     this.errorMessage = null;
     this.confirmMessage = null;
+  }
+
+  private fillGenres(genres: Genre[]) {
+    this.form.genres = this.genreService.genres;
+    for (let i = 0; i < this.form.genres.length; i++) {
+      if ((genres.find(value => value.id === this.form.genres[i].id) !== undefined) ) {
+        this.form.genres[i].check = true;
+      } else {
+        this.form.genres[i].check = false;
+      }
+    }
+  }
+
+  onChangeGenre(id: number, check: boolean) {
+    for (let i = 0; i < this.form.genres.length; i++) {
+      if (this.form.genres[i].id === id) {
+        this.form.genres[i].check = !check;
+      }
+    }
+
   }
 
   updateForm() {
@@ -46,12 +68,19 @@ export class FilmComponent implements OnInit {
   }
 
   addForm() {
-    this.filmForm.id = null;
+    this.form.id = null;
     this.addOrUpdateForm();
   }
 
   addOrUpdateForm() {
-    this.filmService.addOrUpdate(this.filmForm).subscribe(value => {
+    const genresTemp = [];
+    for (let i = 0; i < this.form.genres.length; i++) {
+      if (this.form.genres[i].check === true) {
+        genresTemp.push(this.form.genres[i]);
+      }
+    }
+    this.form.genres = genresTemp;
+    this.filmService.addOrUpdate(this.form).subscribe(value => {
       this.confirmMessage = null;
       for (let i = 0; i < this.filmService.films.length; i++) {
         if (this.filmService.films[i].id === value.id) {

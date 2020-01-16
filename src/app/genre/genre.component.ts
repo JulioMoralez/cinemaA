@@ -8,7 +8,7 @@ import {Genre, GenreService} from '../shared/genre.service';
 })
 export class GenreComponent implements OnInit {
 
-  form: Genre = {id: null, name: null};
+  form: Genre = {id: null, name: null, check: null};
   editor: boolean;
   errorMessage: string;
   confirmMessage: string;
@@ -20,8 +20,9 @@ export class GenreComponent implements OnInit {
   }
 
   openEditForm(id: number) {
-    const film = this.genreService.genres.find(value => value.id === id);
-    this.form.id = film.id;
+    const genre = this.genreService.genres.find(value => value.id === id);
+    this.form.id = genre.id;
+    this.form.name = genre.name;
     this.editor = true;
     this.errorMessage = null;
     this.confirmMessage = null;
@@ -42,12 +43,12 @@ export class GenreComponent implements OnInit {
       for (let i = 0; i < this.genreService.genres.length; i++) {
         if (this.genreService.genres[i].id === value.id) {
           this.genreService.genres[i] = value;
-          this.confirmMessage = 'Данные фильма изменены';
+          this.confirmMessage = 'Название жанра изменено';
         }
       }
       if (this.confirmMessage === null) {
         this.genreService.genres.push(value);
-        this.confirmMessage = 'Фильм добавлен';
+        this.confirmMessage = 'Жанр добавлен';
       }
     });
     this.editor = false;
@@ -67,7 +68,7 @@ export class GenreComponent implements OnInit {
         this.confirmMessage = null;
       } else {
         this.errorMessage = null;
-        this.confirmMessage = 'Фильм удален';
+        this.confirmMessage = 'Жанр удален';
         for (let i = 0; i < this.genreService.genres.length; i++) {
           if (this.genreService.genres[i].id === id) {
             this.genreService.genres.splice(i, 1);

@@ -2,6 +2,7 @@ import {Injectable, NgModule} from '@angular/core';
 import {HttpClient, HttpHeaders, HttpParams} from '@angular/common/http';
 import {Observable} from 'rxjs';
 import {tap} from 'rxjs/operators';
+import {Film} from './film.service';
 
 export class Message {
   constructor(
@@ -17,8 +18,8 @@ export class Message {
 export class MessageService {
 
   public url = 'http://localhost:8080/message';
-  public message: Message;
-  public messages: Message[];
+  public message: Message = null;
+  public messages: Message[] = null;
 
   constructor(private http: HttpClient) { }
 

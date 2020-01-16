@@ -2,6 +2,7 @@ import {Injectable, NgModule} from '@angular/core';
 import {HttpClient, HttpHeaders, HttpParams} from '@angular/common/http';
 import {Observable} from 'rxjs';
 import {tap} from 'rxjs/operators';
+import {Film} from './film.service';
 
 export interface Role {
   name: string;
@@ -32,7 +33,7 @@ export interface UserAuth {
 })
 export class UserService {
 
-  public user: User;
+  public user: User = null;
 
    constructor(private http: HttpClient) { }
 

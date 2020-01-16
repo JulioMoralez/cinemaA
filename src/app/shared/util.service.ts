@@ -21,7 +21,7 @@ export class MyDay {
 export class UtilService {
 
   public url = 'http://localhost:8080/util';
-  public myDays: MyDay[];
+  public myDays: MyDay[] = null;
 
   constructor( private http: HttpClient) {
 

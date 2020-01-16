@@ -6,20 +6,15 @@
 </div>
 
 <div *ngIf="editor">
-  <input type="text" placeholder="id" [(ngModel)]="filmForm.id">
-  <input type="text" placeholder="Имя" [(ngModel)]="filmForm.name">
-  <input type="text" placeholder="Год" [(ngModel)]="filmForm.year">
-  <input type="text" placeholder="Длительность" [(ngModel)]="filmForm.length">
-  <input type="text" placeholder="Оценка" [(ngModel)]="filmForm.rating">
-  <input type="text" placeholder="Картинка" [(ngModel)]="filmForm.picPath">
+  <input type="text" placeholder="id" [(ngModel)]="form.id">
+  <input type="text" placeholder="Имя" [(ngModel)]="form.name">
+  <input type="text" placeholder="Год" [(ngModel)]="form.year">
+  <input type="text" placeholder="Длительность" [(ngModel)]="form.length">
+  <input type="text" placeholder="Оценка" [(ngModel)]="form.rating">
+  <input type="text" placeholder="Картинка" [(ngModel)]="form.picPath">
     <div *ngFor="let genre of genreService.genres">
-      <div>{{genre.name}}</div>
-
+      <div>{{genre.name}}  <input type="checkbox" [checked]="genre.check" (change)="onChangeGenre(genre.id, genre.check)"/></div>
     </div>
-<!--  <div *ngFor="let role of userForm.roles">-->
-<!--    <div>{{role.runame}} <input type="checkbox" [checked]="role.check" (change)="onChange(role.name, role.check)"/></div>-->
-
-<!--  </div>-->
   <button (click)="updateForm()">Изменить</button>
   <button (click)="addForm()">Добавить</button>
   <button (click)="breakForm()">Отмена</button>
@@ -34,6 +29,9 @@
     <div class="card-body">
       <h5 class="card-title">{{value.name}}, {{value.year}}</h5>
       <p class="card-text">{{value.rating}}</p>
+      <div *ngFor="let genre of value.genres; let isLast=last">
+        <div>{{genre.name}}{{isLast ? '' : ', '}}</div>
+      </div>
       <a class="btn btn-primary" (click)="openEditForm(value.id)">Редактировать</a>
       <a class="btn btn-primary" (click)="delete(value.id)">Удалить</a>
     </div>

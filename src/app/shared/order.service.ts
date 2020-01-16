@@ -2,6 +2,7 @@ import {Injectable, NgModule} from '@angular/core';
 import {HttpClient, HttpHeaders, HttpParams} from '@angular/common/http';
 import {Observable} from 'rxjs';
 import {tap} from 'rxjs/operators';
+import {Film} from './film.service';
 
 export class Order {
   constructor(
@@ -16,8 +17,8 @@ export class Order {
 export class OrderService {
 
   public url = 'http://localhost:8080/order';
-  public order: Order;
-  public orders: Order[];
+  public order: Order = null;
+  public orders: Order[] = null;
 
   constructor(private http: HttpClient) { }
 

@@ -13,7 +13,7 @@ export class Schedule {
     public film: Film,
     public hall: Hall,
     public time: number,
-    public date: string,
+    public date: Date,
     public price: number
   ) {}
 }
@@ -25,9 +25,9 @@ export class Schedule {
 export class ScheduleService {
 
   public url = 'http://localhost:8080/schedule';
-  public schedule: Schedule;
-  public schedules: Schedule[];
-  public schedulesToday: Schedule[];
+  public schedule: Schedule = null;
+  public schedules: Schedule[] = null
+  public schedulesToday: Schedule[] = null;
 
   constructor(private http: HttpClient, private utilService: UtilService) { }
 

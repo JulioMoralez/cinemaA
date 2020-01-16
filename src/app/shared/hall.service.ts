@@ -6,6 +6,9 @@ import {tap} from 'rxjs/operators';
 export class Hall {
   constructor(
     public id: number,
+    public name: string,
+    public row: number,
+    public place: number,
   ) {}
 }
 
@@ -16,8 +19,8 @@ export class Hall {
 export class HallService {
 
   public url = 'http://localhost:8080/hall';
-  public hall: Hall;
-  public halls: Hall[];
+  public hall: Hall = null;
+  public halls: Hall[] = null;
 
   constructor(private http: HttpClient) { }
 
@@ -35,6 +38,7 @@ export class HallService {
   }
 
   addOrUpdate(hall: Hall) {
+    console.log(hall);
     return this.http.post<Hall>(this.url + '/', hall);
   }
 

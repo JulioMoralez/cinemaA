@@ -25,9 +25,9 @@ export class Film {
 export class FilmService {
 
   public url = 'http://localhost:8080/film';
-  public film: Film;
-  public films: Film[];
-  public filmsDay: Film[];
+  public film: Film = null;
+  public films: Film[] = null;
+  public filmsDay: Film[] = null;
 
   constructor(private http: HttpClient) { }
 

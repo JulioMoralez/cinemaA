@@ -7,21 +7,67 @@
 
 <div *ngIf="editor">
   <input type="text" placeholder="id" [(ngModel)]="form.id">
-  <!--  <div *ngFor="let role of userForm.roles">-->
-  <!--    <div>{{role.runame}} <input type="checkbox" [checked]="role.check" (change)="onChange(role.name, role.check)"/></div>-->
+  <input type="text" placeholder="стоимость" [(ngModel)]="form.price">
 
-  <!--  </div>-->
+  <div *ngIf="filmService.films" class="form-group">
+    <label for="labelFilm">
+      Фильм
+    </label>
+    <select id="labelFilm" name="films" [(ngModel)]="form.film.id" class="form-control">
+      <option *ngFor="let film of filmService.films"  [value]="film.id">{{film.name}}</option>
+    </select>
+  </div>
+
+  <div *ngIf="hallService.halls" class="form-group">
+    <label for="labelHall">
+      Зал
+    </label>
+    <select id="labelHall" name="halls" [(ngModel)]="form.hall.id" class="form-control">
+      <option *ngFor="let hall of hallService.halls"  [value]="hall.id">{{hall.name}}</option>
+    </select>
+  </div>
+
+  <div *ngIf="myDays" class="form-group">
+    <label for="labelDay">
+      День
+    </label>
+    <select id="labelDay" name="myDay" [(ngModel)]="indexDay" class="form-control">
+      <option *ngFor="let day of myDays; let i = index"  [value]="i">{{day | date: 'dd.MM.yyyy'}}</option>
+    </select>
+  </div>
+
+  <div *ngIf="hours" class="form-group">
+    <label for="labelHour">
+      Время начала сеанса: час
+    </label>
+    <select id="labelHour" name="hour" [(ngModel)]="hour" class="form-control">
+      <option *ngFor="let h of hours"  [value]="h">{{h}}</option>
+    </select>
+  </div>
+
+  <div *ngIf="mins" class="form-group">
+    <label for="labelMin">
+      Время начала сеанса: мин
+    </label>
+    <select id="labelMin" name="min" [(ngModel)]="min" class="form-control">
+      <option *ngFor="let m of mins"  [value]="m">{{m}}</option>
+    </select>
+  </div>
+
+
   <button (click)="updateForm()">Изменить</button>
   <button (click)="addForm()">Добавить</button>
   <button (click)="breakForm()">Отмена</button>
 </div>
 
 <div *ngFor="let value of scheduleService.schedules">
-  <div class="card" style="width: 18rem;">
-    <img src="..." class="card-img-top" alt="...">
+  <div class="card">
     <div class="card-body">
-      <h5 class="card-title">{{value.id}}</h5>
-      <p class="card-text">text text</p>
+      <h5 class="card-title">Фильм {{value.film.name}}</h5>
+      <p class="card-text">Зал {{value.hall.name}}</p>
+      <p class="card-text"> Стоимость {{value.price}}</p>
+      <p class="card-text">Дата {{value.date}}</p>
+      <p class="card-text">Время {{(value.time - value.time % 60) / 60}}:{{value.time % 60}}</p>
       <a class="btn btn-primary" (click)="openEditForm(value.id)">Редактировать</a>
       <a class="btn btn-primary" (click)="delete(value.id)">Удалить</a>
     </div>
