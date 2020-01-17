@@ -13,7 +13,7 @@
 </table>
 
 <div  class="card-columns">
-  <div *ngIf="bestToday.length !== 0; else noFilms">
+  <div *ngIf="filmService.filmsDay[selectedDay]; else noFilms">
     <h3>Лучшее сегодня</h3>
     <div *ngFor="let film of bestToday" >
       <app-film-form [value]="film"></app-film-form>
@@ -30,7 +30,9 @@
       {{film.name}}
           <div *ngFor="let schedule of scheduleService.schedulesToday" >
             <span *ngIf="schedule.film.id === film.id">
+              <a  [routerLink]="['/schedule-place', schedule.id]">
                 <app-schedule-time [time]="schedule.time"></app-schedule-time>
+              </a>
             </span>
           </div>
         </td>

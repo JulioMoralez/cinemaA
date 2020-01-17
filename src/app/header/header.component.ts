@@ -18,10 +18,9 @@ export class HeaderComponent implements OnInit {
   ngOnInit() {
     const id = (sessionStorage.getItem('id'));
     if (id !== null) {
-      console.log('AuthService1');
       this.userService.getUser(id).subscribe(value => console.log(value));
     } else {
-      console.log('AuthService2');
+      console.log('AuthService');
     }
   }
 
@@ -35,7 +34,6 @@ export class HeaderComponent implements OnInit {
   }
 
   register() {
-    console.log('sd');
     this.router.navigate(['/registration']);
   }
 }

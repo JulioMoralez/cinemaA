@@ -1,0 +1,28 @@
+<div class="mt-5">
+  <div *ngIf="scheduleService.placesForSchedule">
+    <table border="1" align="center" cellpadding="4" table-layout="fixed">
+        <tr *ngFor="let rows of scheduleService.placesForSchedule; let i=index">
+            <td *ngFor="let place of rows; let j=index">
+              <div *ngIf="place === 0; else style1">
+                  <button class="btn btn-outline-info my-2 my-sm-0 mx-1" type="submit" (click)="selectPlace(i, j)">0</button>
+              </div>
+              <ng-template #style1>
+                <div *ngIf="place === 1; else style2">
+                  <button class="btn btn-outline-danger my-2 my-sm-0 mx-1" type="submit" (click)="selectPlace(i, j)">0</button>
+                </div>
+              </ng-template>
+              <ng-template #style2>
+                <div *ngIf="place === 2; else style3">
+                  <button class="btn btn-outline-secondary my-2 my-sm-0 mx-1 active" type="submit" (click)="selectPlace(i, j)">0</button>
+                </div>
+              </ng-template>
+              <ng-template #style3>
+                <div>
+                  <button class="btn btn-outline-dark my-2 my-sm-0 mx-1 active" type="submit" (click)="selectPlace(i, j)">0</button>
+                </div>
+              </ng-template>
+            </td>
+        </tr>
+    </table>
+  </div>
+</div>

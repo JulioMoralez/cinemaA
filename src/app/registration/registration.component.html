@@ -24,11 +24,11 @@
       <input type="text" class="form-control is-valid" id="email" [(ngModel)]="email"  name="email" placeholder="почта" required>
     </div>
   </div>
-  <button class="btn btn-primary" type="submit" (click)="register()">Регистрация</button>
-  <div *ngIf="errorMessage" class="alert alert-danger" role="alert">
+  <button class="btn btn-primary m-1" type="submit" (click)="register()">Регистрация</button>
+  <div *ngIf="errorMessage" class="alert alert-danger m-1" role="alert">
     {{errorMessage}}
   </div>
-  <div *ngIf="confirmReg" class="alert alert-success" role="alert">
+  <div *ngIf="confirmReg" class="alert alert-success m-1" role="alert">
     {{confirmReg}}
   </div>
 </form>

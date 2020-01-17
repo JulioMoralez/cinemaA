@@ -13,16 +13,19 @@ export class HelloComponent implements OnInit {
   selectedDay: number;
   bestToday: Film[] = [];
 
-  constructor(private scheduleService: ScheduleService, private utilService: UtilService, private filmService: FilmService) { }
+  constructor(private scheduleService: ScheduleService,
+              private utilService: UtilService,
+              private filmService: FilmService) { }
 
   ngOnInit() {
-    this.scheduleService.getScheduleWeek().subscribe();
+    const d = new Date();
+    this.scheduleService.getScheduleWeek().subscribe(value => this.selectDay(d.getDate(), d.getDay()));
     this.utilService.getDays().subscribe();
 
   }
 
   getBestToday(filmToday: Film[]) {
-    this.bestToday = filmToday.sort((a, b) => b.rating - a.rating).slice(0, 2);
+    this.bestToday = filmToday.sort((a, b) => b.rating - a.rating).slice(0, 3);
 
   }
 

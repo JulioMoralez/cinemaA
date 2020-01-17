@@ -23,10 +23,13 @@
 <!--<img src="{{image1}}"  alt="124">-->
 
 <div  class="card-columns">
-  <div *ngFor="let value of filmService.films" >
-    <app-film-form [value]="value"></app-film-form>
-    <a class="btn btn-primary" (click)="openEditForm(value.id)">Редактировать</a>
-    <a class="btn btn-primary" (click)="delete(value.id)">Удалить</a>
+    <div *ngFor="let value of filmService.films" >
+      <div class="card mt-5">
+      <app-film-form [value]="value">
+      </app-film-form>
+      <a class="btn btn-primary" (click)="openEditForm(value.id)">Редактировать</a>
+      <a class="btn btn-primary" (click)="delete(value.id)">Удалить</a>
+      </div>
   </div>
 </div>
 
