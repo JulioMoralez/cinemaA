@@ -7,6 +7,8 @@ import {Film} from './film.service';
 export class Place {
   constructor(
     public id: number,
+    public row: number,
+    public place: number,
   ) {}
 }
 

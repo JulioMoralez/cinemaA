@@ -1,28 +1,60 @@
-<div class="mt-5">
-  <div *ngIf="scheduleService.placesForSchedule">
-    <table border="1" align="center" cellpadding="4" table-layout="fixed">
-        <tr *ngFor="let rows of scheduleService.placesForSchedule; let i=index">
+<button class="btn btn-outline-info my-2 my-sm-0 ml-5" type="submit">0</button> <span class="ml-2">Свободное место</span>
+<button class="btn btn-outline-danger my-2 my-sm-0 ml-5" type="submit">0</button> <span class="ml-2">Выбрано Вами</span>
+<button class="btn btn-outline-secondary my-2 my-sm-0 ml-5 active" type="submit">0</button > <span class="ml-2">Бронь</span>
+<button class="btn btn-outline-dark my-2 my-sm-0 ml-5 active" type="submit">0</button> <span class="ml-2">Занято</span>
+
+<div *ngIf="schedule">
+  <table border="0" align="center" cellpadding="4" table-layout="fixed">
+    <tr>
+      <th>Зал {{schedule.hall.name}}</th>
+      <th>Фильм {{schedule.film.name}}</th>
+      <th>Дата {{schedule.date}}</th>
+      <th>Стоимость {{schedule.price}}</th>
+      <th>Время <app-schedule-time [time]="schedule.time"></app-schedule-time></th>
+    </tr>
+  </table>
+</div>
+<div class="mt-2">
+  <div *ngIf="placesForSchedule">
+
+    <table border="0" align="center" cellpadding="4" table-layout="fixed">
+
+        <tr *ngFor="let rows of placesForSchedule; let i=index">
+          <td>Ряд {{i+1}}</td>
             <td *ngFor="let place of rows; let j=index">
+
               <div *ngIf="place === 0; else style1">
-                  <button class="btn btn-outline-info my-2 my-sm-0 mx-1" type="submit" (click)="selectPlace(i, j)">0</button>
+                  <button class="btn btn-outline-info my-2 my-sm-0 mx-1" type="submit" (click)="selectPlace(i, j, -1)">{{j+1}}</button>
               </div>
               <ng-template #style1>
                 <div *ngIf="place === 1; else style2">
-                  <button class="btn btn-outline-danger my-2 my-sm-0 mx-1" type="submit" (click)="selectPlace(i, j)">0</button>
+                  <button class="btn btn-outline-danger my-2 my-sm-0 mx-1" type="submit" (click)="selectPlace(i, j, -1)">{{j+1}}</button>
                 </div>
               </ng-template>
               <ng-template #style2>
                 <div *ngIf="place === 2; else style3">
-                  <button class="btn btn-outline-secondary my-2 my-sm-0 mx-1 active" type="submit" (click)="selectPlace(i, j)">0</button>
+                  <button class="btn btn-outline-secondary my-2 my-sm-0 mx-1 active" type="submit" (click)="selectPlace(i, j, -1)">{{j+1}}</button>
                 </div>
               </ng-template>
               <ng-template #style3>
                 <div>
-                  <button class="btn btn-outline-dark my-2 my-sm-0 mx-1 active" type="submit" (click)="selectPlace(i, j)">0</button>
+                  <button class="btn btn-outline-dark my-2 my-sm-0 mx-1 active" type="submit" (click)="selectPlace(i, j, -1)">{{j+1}}</button>
                 </div>
               </ng-template>
             </td>
         </tr>
     </table>
+    <div>Всего выбрано мест: {{ticketCount}}, стоимость: {{price}}</div>
+    <button class="btn btn-outline-success my-2 my-sm-0 mr-5" *ngIf="ticketCount > 0" type="submit" (click)="selectPlace(-1, -1, 1)">Купить</button>
+    <div *ngIf="errorMessage" class="alert alert-danger m-1" role="alert">
+      {{errorMessage}}
+    </div>
+    <div *ngFor="let rows of placesForSchedule; let i=index">
+      <div *ngFor="let place of rows; let j=index">
+        <div *ngIf="place === 1">
+          Ряд {{i+1}} место {{j+1}}
+        </div>
+      </div>
+    </div>
   </div>
 </div>

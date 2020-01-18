@@ -81,48 +81,8 @@ export class ScheduleService {
     });
   }
 
-  // переделать, убрать дублирование!!!!!!
-
-
-  getSchedulePlace(scheduleId: string): Observable<PlacesInHallDto> {
-    let hall = null;
-    if (this.schedulesToday === null) {
-      this.getE(scheduleId).subscribe(value => this.schedule = value);
-    } else {
-      this.schedule = this.schedulesToday.find(value => value.id === Number(scheduleId));
-    }
-    hall = this.schedule.hall;
-    const param: PlacesInHallDto = {
-      userId: this.userService.user.id,
-      scheduleId: Number(scheduleId),
-      row: -1,
-      place: -1,
-      maxRow: hall.row,
-      maxPlace: hall.place,
-      placesForSchedule: [],
-    };
-    return this.http.post<PlacesInHallDto>(this.url + '/placelist/', param)
-      .pipe(tap(x => this.placesForSchedule = x.placesForSchedule));
+  selectPlace(param: PlacesInHallDto): Observable<PlacesInHallDto> {
+      return this.http.post<PlacesInHallDto>(this.url + '/placeselect/', param);
   }
 
-  selectPlace(scheduleId: string, i: number, j: number): Observable<PlacesInHallDto> {
-    let hall = null;
-    if (this.schedulesToday === null) {
-      this.getE(scheduleId).subscribe(value => this.schedule = value);
-    } else {
-      this.schedule = this.schedulesToday.find(value => value.id === Number(scheduleId));
-    }
-    hall = this.schedule.hall;
-    const param: PlacesInHallDto = {
-       userId: this.userService.user.id,
-       scheduleId: Number(scheduleId),
-       row: i,
-       place: j,
-       maxRow: hall.row,
-       maxPlace: hall.place,
-       placesForSchedule: [],
-    };
-    return this.http.post<PlacesInHallDto>(this.url + '/placeselect/', param)
-      .pipe(tap(x => this.placesForSchedule = x.placesForSchedule));
-  }
 }

@@ -1,3 +1,9 @@
+<div *ngIf="errorMessage" class="alert alert-danger" role="alert">
+  {{errorMessage}}
+</div>
+<div *ngIf="confirmMessage" class="alert alert-success" role="alert">
+  {{confirmMessage}}
+</div>
 <div *ngIf="!editor">
 <table *ngIf="userService.user">
 <tr>
@@ -10,8 +16,15 @@
 <td>{{userService.user.username}}</td>
 <td>{{userService.user.name}}</td>
 <td>{{userService.user.email}}</td>
+  <div *ngIf="!userService.user.emailConfirmed">
+    <button class="btn btn-outline-success my-2 my-sm-0 mr-5 mx-1" type="submit" (click)="verifyEmail()">Выслать ключ на почту</button>
+    <input type="text" [(ngModel)]="verifyCode"/>
+    <button class="btn btn-outline-success my-2 my-sm-0 mr-5 mx-1" type="submit" (click)="confirmCode()">Подтвердить почту</button>
+  </div>
+  <div *ngIf="userService.user.emailConfirmed">
+    <span>Почта подтверждена</span>
+  </div>
 <td *ngFor="let role of userService.user.roles"><div *ngIf="role.check">{{role.runame}}</div></td>
-
 </table>
 <button (click)="updateUserForm()">Изменить</button>
 </div>
@@ -21,13 +34,44 @@
   <input type="text" placeholder="id" [(ngModel)]="userForm.id">
   <input type="text" placeholder="Имя" [(ngModel)]="userForm.name">
   <input type="text" placeholder="Почта" [(ngModel)]="userForm.email">
+
   <div *ngFor="let role of userForm.roles">
     <div>{{role.runame}} <input type="checkbox" [checked]="role.check" (change)="onChange(role.name, role.check)"/></div>
-
   </div>
   <button (click)="updateUser()">Изменить</button>
   <button (click)="breakUser()">Отмена</button>
 </div>
+<span *ngFor="let order of orders">
+  <a class="btn btn-primary m-1" role="button" aria-expanded="false" (click)="viewOrder(order.id)">
+    <span>{{order.schedule.film.name}} {{order.schedule.date}}</span>
+  </a>
+</span>
+
+<div *ngIf="showOrder">
+  <div *ngIf="order">
+    <div>Время заказа {{order.orderTime  | date:"dd MM yyyy, HH:mm"}}</div>
+    <div>Фильм {{order.schedule.film.name}}</div>
+    <div>Дата сеанса {{order.schedule.date  | date:"dd MM yyyy"}}</div>
+    <div>Время начала <app-schedule-time [time]="order.schedule.time"></app-schedule-time> </div>
+    <div>Зал {{order.schedule.hall.name}}</div>
+    <div>Стоимость {{order.schedule.price}}</div>
+    <div>Код {{order.key}}</div>
+    <div *ngFor="let place of order.places">
+      <span>Ряд {{place.row + 1}} </span>
+      <span>Место {{place.place + 1}}</span>
+    </div>
+  </div>
+</div>
+
+<!--<a class="btn btn-primary" data-toggle="collapse" href="#collapseExample" role="button" aria-expanded="false" aria-controls="collapseExample">-->
+<!--  <div>текст</div>-->
+<!--</a>-->
+<!--<div class="collapse" id="collapseExample">-->
+<!--  <div class="form-group mt-3">-->
+<!--    <div>текст внутри</div>-->
+<!--  </div>-->
+<!--</div>-->
+
 <!--{{dt | date:"longDate"}}-->
 <!--<p></p>-->
 

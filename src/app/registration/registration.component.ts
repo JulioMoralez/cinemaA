@@ -21,7 +21,9 @@ export class RegistrationComponent implements OnInit {
   constructor(private userService: UserService) { }
 
   ngOnInit() {
-    this.userService.getUsers().subscribe(value => this.users = value);
+    this.userService.getUsers().subscribe(value => {
+      this.users = value;
+    });
   }
 
   register() {
@@ -46,7 +48,7 @@ export class RegistrationComponent implements OnInit {
       return;
     }
     this.errorMessage = null;
-    const user: User = {id: null, username: this.username, roles: null, email: this.email, name: this.name, password: this.password};
+    const user: User = {id: null, username: this.username, roles: null, email: this.email, name: this.name, password: this.password, emailConfirmed: null, verifyCode: null};
     this.userService.createOrUpdateUser(user).subscribe(value => {
       if (isNumber(value.id)) {
           this.confirmReg = 'Регистрация успешна, ' + value.username;

@@ -8,7 +8,7 @@ import {Order, OrderService} from '../shared/order.service';
 })
 export class OrderComponent implements OnInit {
 
-  form: Order = {id: null};
+  form: Order = {id: null, user: null, schedule: null, places: null, key: null, orderTime: null, price: null};
   editor: boolean;
   errorMessage: string;
   confirmMessage: string;
@@ -20,8 +20,14 @@ export class OrderComponent implements OnInit {
   }
 
   openEditForm(id: number) {
-    const film = this.orderService.orders.find(value => value.id === id);
-    this.form.id = film.id;
+    const order = this.orderService.orders.find(value => value.id === id);
+    this.form.id = order.id;
+    this.form.user = order.user;
+    this.form.schedule = order.schedule;
+    this.form.places = order.places;
+    this.form.key = order.key;
+    this.form.orderTime = order.orderTime;
+    this.form.price = order.price;
     this.editor = true;
     this.errorMessage = null;
     this.confirmMessage = null;
@@ -42,12 +48,12 @@ export class OrderComponent implements OnInit {
       for (let i = 0; i < this.orderService.orders.length; i++) {
         if (this.orderService.orders[i].id === value.id) {
           this.orderService.orders[i] = value;
-          this.confirmMessage = 'Данные фильма изменены';
+          this.confirmMessage = 'Данные заказа изменены';
         }
       }
       if (this.confirmMessage === null) {
         this.orderService.orders.push(value);
-        this.confirmMessage = 'Фильм добавлен';
+        this.confirmMessage = 'Заказ добавлен';
       }
     });
     this.editor = false;
@@ -67,7 +73,7 @@ export class OrderComponent implements OnInit {
         this.confirmMessage = null;
       } else {
         this.errorMessage = null;
-        this.confirmMessage = 'Фильм удален';
+        this.confirmMessage = 'Заказ удален';
         for (let i = 0; i < this.orderService.orders.length; i++) {
           if (this.orderService.orders[i].id === id) {
             this.orderService.orders.splice(i, 1);

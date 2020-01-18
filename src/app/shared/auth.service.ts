@@ -20,7 +20,6 @@ export class AuthService {
       map(
         userData => {
           sessionStorage.setItem('id', userData.id.toString());
-          // sessionStorage.setItem('username', userData.username);
           this.userService.getUser(userData.id.toString()).subscribe(value => this.userService.user = value);
           return userData;
         }

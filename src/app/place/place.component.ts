@@ -8,7 +8,7 @@ import {Place, PlaceService} from '../shared/place.service';
 })
 export class PlaceComponent implements OnInit {
 
-  form: Place = {id: null};
+  form: Place = {id: null, row: null, place: null};
   editor: boolean;
   errorMessage: string;
   confirmMessage: string;
@@ -20,8 +20,10 @@ export class PlaceComponent implements OnInit {
   }
 
   openEditForm(id: number) {
-    const film = this.placeService.places.find(value => value.id === id);
-    this.form.id = film.id;
+    const place = this.placeService.places.find(value => value.id === id);
+    this.form.id = place.id;
+    this.form.row = place.row;
+    this.form.place = place.place;
     this.editor = true;
     this.errorMessage = null;
     this.confirmMessage = null;
