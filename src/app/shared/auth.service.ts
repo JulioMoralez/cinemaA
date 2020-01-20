@@ -1,7 +1,8 @@
 import {Component, Injectable} from '@angular/core';
 import {HttpClient, HttpHeaders} from '@angular/common/http';
 import {User, UserService} from './user.service';
-import {map} from 'rxjs/operators';
+import {map, tap} from 'rxjs/operators';
+import {Observable} from 'rxjs';
 
 @Injectable({
   providedIn: 'root'
@@ -14,10 +15,10 @@ export class AuthService {
   }
 
 
-  authenticate(username, password) {
+  authenticate(username, password): Observable<User> {
     const headers = new HttpHeaders({ Authorization: 'Basic ' + btoa(username + ':' + password) });
     return this.httpClient.get<User>('http://localhost:8080/validateLogin', {headers}).pipe(
-      map(
+      tap(
         userData => {
           sessionStorage.setItem('id', userData.id.toString());
           this.userService.getUser(userData.id.toString()).subscribe(value => this.userService.user = value);

@@ -11,15 +11,15 @@ import {Genre, GenreService} from '../shared/genre.service';
 })
 export class HelloComponent implements OnInit {
 
-  selectedDay: number;
-  bestToday: Film[] = [];
-  filmsWithGenreFilter: Film[] = [];
-  genres: Genre[] = [];
-
   constructor(private scheduleService: ScheduleService,
               private utilService: UtilService,
               private filmService: FilmService,
               private genreService: GenreService) { }
+
+  selectedDay: number;
+  bestToday: Film[] = [];
+  filmsWithGenreFilter: Film[] = [];
+  genres: Genre[] = [];
 
   ngOnInit() {
     const d = new Date();

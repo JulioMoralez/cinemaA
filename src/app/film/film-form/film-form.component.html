@@ -1,7 +1,7 @@
 
   <div class="card mt-5">
-    <img src="" class="card-img-top" alt="...">
     <div class="card-body">
+      <img src="../../../assets/{{value.picPath}}"/>
       <h5 class="card-title">{{value.name}}, {{value.year}}</h5>
       <p class="card-text">{{value.rating}}</p>
       <div *ngFor="let genre of value.genres; let isLast=last">

@@ -28,6 +28,7 @@ export class FilmService {
   public film: Film = null;
   public films: Film[] = null;
   public filmsDay: Film[][] = [];
+  private selectedFile: File = null;
 
   constructor(private http: HttpClient) { }
 
@@ -52,6 +53,19 @@ export class FilmService {
     return this.http.get<Film[]>(this.url + 's/day/' + day).pipe(tap(x => {
       this.filmsDay[day] = x;
     }));
+  }
+
+  fileSelected(event) {
+    this.selectedFile = event.target.files[0] as File;
+    console.log(this.selectedFile);
+  }
+
+  upload(id: number) {
+    const fd = new FormData();
+    fd.append('id', id.toString());
+    fd.append('image', this.selectedFile, this.selectedFile.name);
+    console.log(fd);
+    this.http.post(this.url + '/img', fd).subscribe(value => console.log(value));
   }
 
 }

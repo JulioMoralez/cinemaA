@@ -5,6 +5,8 @@
   {{confirmMessage}}
 </div>
 
+
+
 <div *ngIf="editor">
   <input type="text" placeholder="id" [(ngModel)]="form.id">
   <input type="text" placeholder="Имя" [(ngModel)]="form.name">
@@ -12,6 +14,8 @@
   <input type="text" placeholder="Длительность" [(ngModel)]="form.length">
   <input type="text" placeholder="Оценка" [(ngModel)]="form.rating">
   <input type="text" placeholder="Картинка" [(ngModel)]="form.picPath">
+  <input type="file" (change)="fileSelected($event)"/>
+  <button type="button" (click)="upload(form.id)">Картинка</button>
     <div *ngFor="let genre of genreService.genres">
       <div>{{genre.name}}  <input type="checkbox" [checked]="genre.check" (change)="onChangeGenre(genre.id, genre.check)"/></div>
     </div>

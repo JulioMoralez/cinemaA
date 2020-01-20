@@ -2,17 +2,6 @@
   <nav  class="navbar navbar-expand-lg navbar-light bg-light">
 
     <ul class="navbar-nav mr-auto">
-      <div *ngIf="userService.user">
-        <a class="navbar-text mx-2" routerLink="/user">{{userService.user.username}}</a>
-      </div>
-      <form class="form-inline my-2 my-lg-0">
-        <input [(ngModel)]="username" name="username" class="form-control mr-sm-2" *ngIf="!authService.isUserLoggedIn()" type="text" placeholder="логин" aria-label="Search" >
-        <input [(ngModel)]="password" name="password" class="form-control mr-sm-2" *ngIf="!authService.isUserLoggedIn()" type="password" placeholder="пароль" aria-label="Search">
-        <button class="btn btn-outline-success my-2 my-sm-0 mx-1" *ngIf="!authService.isUserLoggedIn()" type="submit" (click)="login()">Войти</button>
-        <button class="btn btn-outline-success my-2 my-sm-0 mx-1" *ngIf="!authService.isUserLoggedIn()" type="submit" (click)="register()">Регистрация</button>
-        <button class="btn btn-outline-success my-2 my-sm-0 mr-5" *ngIf="authService.isUserLoggedIn()" type="submit" (click)="logout()">Выйти</button>
-      </form>
-
       <button class="btn btn-outline-success my-2 my-sm-0 mx-1" type="submit" routerLink="/">Расписание</button>
       <button class="btn btn-outline-success my-2 my-sm-0 mx-1" type="submit" routerLink="/films">Фильмы</button>
       <button class="btn btn-outline-success my-2 my-sm-0 mx-1" *ngIf="userService.isModerator || userService.isModerator" type="submit" routerLink="/genres">Жанры</button>
@@ -21,6 +10,25 @@
       <button class="btn btn-outline-success my-2 my-sm-0 mx-1" *ngIf="userService.isModerator || userService.isModerator" type="submit" routerLink="/orders">Заказы</button>
       <button class="btn btn-outline-success my-2 my-sm-0 mx-1" *ngIf="userService.isModerator || userService.isModerator" type="submit" routerLink="/places">Места</button>
       <button class="btn btn-outline-success my-2 my-sm-0 mx-1" *ngIf="userService.isModerator || userService.isModerator" type="submit" routerLink="/schedules">Расписание</button>
+
+    </ul>
+    <ul class="nav navbar-nav navbar-right">
+        <div *ngIf="userService.user">
+          <a class="navbar-text mx-2" routerLink="/user">{{userService.user.username}}</a>
+        </div>
+        <form class="form-inline my-2 my-lg-0">
+          <div *ngIf="invalid">
+            <input [(ngModel)]="username" name="username" class="form-control mr-sm-2 is-invalid" *ngIf="!authService.isUserLoggedIn()" type="text" placeholder="логин" aria-label="Search" >
+            <input [(ngModel)]="password" name="password" class="form-control mr-sm-2 is-invalid" *ngIf="!authService.isUserLoggedIn()" type="password" placeholder="пароль" aria-label="Search">
+          </div>
+          <div *ngIf="!invalid">
+            <input [(ngModel)]="username" name="username" class="form-control mr-sm-2" *ngIf="!authService.isUserLoggedIn()" type="text" placeholder="логин" aria-label="Search" >
+            <input [(ngModel)]="password" name="password" class="form-control mr-sm-2" *ngIf="!authService.isUserLoggedIn()" type="password" placeholder="пароль" aria-label="Search">
+          </div>
+          <button class="btn btn-outline-success my-2 my-sm-0 mx-1" *ngIf="!authService.isUserLoggedIn()" type="submit" (click)="login()">Войти</button>
+          <button class="btn btn-outline-success my-2 my-sm-0 mx-1" *ngIf="!authService.isUserLoggedIn()" type="submit" (click)="register()">Регистрация</button>
+          <button class="btn btn-outline-success my-2 my-sm-0 mr-1" *ngIf="authService.isUserLoggedIn()" type="submit" (click)="logout()">Выйти</button>
+        </form>
     </ul>
 
 

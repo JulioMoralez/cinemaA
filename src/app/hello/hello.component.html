@@ -1,17 +1,14 @@
-<table>
+<table class="my-2 mx-3">
   <tr>
-    <td *ngFor="let day of utilService.myDays">
-      <div class="card" style="width: 12rem;">
-        <div class="card-body">
-          <a (click)="selectDay(day.dayOfMonth, day.dayOfWeek)" class="btn btn-primary">{{day.dayOfMonth}} {{day.monthName}}</a>
-          <p class="card-text">{{day.dayOfWeekName}}</p>
-        </div>
+    <td *ngFor="let day of utilService.myDays" >
+      <div class="row" >
+        <a (click)="selectDay(day.dayOfMonth, day.dayOfWeek)" class="btn btn-outline-warning mx-3">{{day.dayOfMonth}} {{day.monthName}} <br> {{day.dayOfWeekName}}</a>
       </div>
     </td>
   </tr>
 </table>
 
-<div *ngIf="genres">
+<div *ngIf="genres" class="my-3 mx-3">
   <span *ngFor="let genre of genres; let isLast=last">
     <span *ngIf="!genre.check; else noGenre">
     <button class="btn btn-outline-danger my-2 my-sm-0 mx-1" type="submit" (click)="changeGenre(genre)">{{genre.name}}</button>
@@ -20,9 +17,8 @@
   </span>
 </div>
 
-
-<div  class="card-columns">
-  <div *ngIf="filmsWithGenreFilter; else noFilms">
+<div class="card-columns my-2 mx-3">
+  <div *ngIf="filmsWithGenreFilter.length>0; else noFilms" class="my-2 mx-3">
     <h3>Лучшее сегодня</h3>
     <div *ngFor="let film of bestToday" >
       <app-film-form [value]="film"></app-film-form>

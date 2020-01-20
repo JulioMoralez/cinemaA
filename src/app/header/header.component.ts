@@ -12,6 +12,7 @@ export class HeaderComponent implements OnInit {
 
   username: string;
   password: string;
+  invalid = false;
 
   constructor(private authService: AuthService, private userService: UserService, private router: Router) { }
 
@@ -23,7 +24,7 @@ export class HeaderComponent implements OnInit {
   }
 
   login() {
-    this.authService.authenticate(this.username, this.password).subscribe();
+    this.authService.authenticate(this.username, this.password).subscribe(value => value, error => this.invalid = true);
     this.router.navigate(['/']);
   }
 
@@ -31,6 +32,7 @@ export class HeaderComponent implements OnInit {
     this.authService.logOut();
     this.username = '';
     this.password = '';
+    this.invalid = false;
     this.router.navigate(['/']);
   }
 

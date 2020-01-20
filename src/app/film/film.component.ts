@@ -122,4 +122,11 @@ export class FilmComponent implements OnInit {
 
   }
 
+  fileSelected(event) {
+    this.filmService.fileSelected(event);
+  }
+
+  upload(id: number) {
+    this.filmService.upload(id);
+  }
 }
