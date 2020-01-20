@@ -36,6 +36,9 @@ export class AuthService {
   logOut() {
     sessionStorage.removeItem('id');
     this.userService.user = null;
+    this.userService.isAdmin = false;
+    this.userService.isModerator = false;
+    this.userService.isUser = false;
   }
 
 }

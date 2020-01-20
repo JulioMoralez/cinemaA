@@ -36,12 +36,20 @@ export class UserService {
 
   public user: User = null;
   public url = 'http://localhost:8080/user';
+  public isAdmin: boolean;
+  public isModerator: boolean;
+  public isUser: boolean;
 
    constructor(private http: HttpClient) { }
 
 
   getUser(id: string): Observable<User> {
-     return this.http.get<User>(this.url + '/' + id).pipe(tap(x => this.user = x));
+     return this.http.get<User>(this.url + '/' + id).pipe(tap(x => {
+       this.user = x;
+       this.isAdmin = this.user.roles.find(value => value.name === 'ROLE_ADMIN').check;
+       this.isModerator = this.user.roles.find(value => value.name === 'ROLE_MODERATOR').check;
+       this.isUser = this.user.roles.find(value => value.name === 'ROLE_USER').check;
+     }));
   }
 
   getUsers(): Observable<User[]> {
@@ -87,4 +95,5 @@ export class UserService {
      };
      return this.http.post<User>(this.url + '/confirm', user);
   }
+
 }

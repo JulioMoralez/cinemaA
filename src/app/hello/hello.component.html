@@ -4,7 +4,6 @@
       <div class="card" style="width: 12rem;">
         <div class="card-body">
           <a (click)="selectDay(day.dayOfMonth, day.dayOfWeek)" class="btn btn-primary">{{day.dayOfMonth}} {{day.monthName}}</a>
-<!--          <h5 class="card-title">{{day.dayOfWeekName}}</h5>-->
           <p class="card-text">{{day.dayOfWeekName}}</p>
         </div>
       </div>
@@ -12,8 +11,18 @@
   </tr>
 </table>
 
+<div *ngIf="genres">
+  <span *ngFor="let genre of genres; let isLast=last">
+    <span *ngIf="!genre.check; else noGenre">
+    <button class="btn btn-outline-danger my-2 my-sm-0 mx-1" type="submit" (click)="changeGenre(genre)">{{genre.name}}</button>
+    </span>
+    <ng-template #noGenre><button class="btn btn-outline-success my-2 my-sm-0 mx-1" type="submit" (click)="changeGenre(genre)">{{genre.name}}</button></ng-template>
+  </span>
+</div>
+
+
 <div  class="card-columns">
-  <div *ngIf="filmService.filmsDay[selectedDay]; else noFilms">
+  <div *ngIf="filmsWithGenreFilter; else noFilms">
     <h3>Лучшее сегодня</h3>
     <div *ngFor="let film of bestToday" >
       <app-film-form [value]="film"></app-film-form>
@@ -22,10 +31,10 @@
   <ng-template #noFilms><h3>Нет сеансов сегодня</h3></ng-template>
 </div>
 
-<div *ngIf="filmService.filmsDay[selectedDay]">
+<div *ngIf="filmsWithGenreFilter">
   <table class="table">
     <tr>
-    <span *ngFor="let film of filmService.filmsDay[selectedDay]" >
+    <span *ngFor="let film of filmsWithGenreFilter" >
       <td>
       {{film.name}}
           <div *ngFor="let schedule of scheduleService.schedulesToday" >
