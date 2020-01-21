@@ -3,6 +3,7 @@ import {ActivatedRoute} from '@angular/router';
 import {PlacesInHallDto, Schedule, ScheduleService} from '../shared/schedule.service';
 import {UserService} from '../shared/user.service';
 import {OrderConfirmDto, OrderService} from '../shared/order.service';
+import {WebsocketService} from '../shared/websocket.service';
 
 export class PlaceSimple {
   row: number;
@@ -23,14 +24,17 @@ export class SchedulePlaceComponent implements OnInit {
   private price: number;
   private places: PlaceSimple[] = [];
   private errorMessage: string;
+  testText: string;
 
   constructor(private route: ActivatedRoute,
               private scheduleService: ScheduleService,
               private userService: UserService,
-              private orderService: OrderService) { }
+              private orderService: OrderService,
+              private websocketService: WebsocketService) { }
 
   ngOnInit() {
     this.scheduleId = this.route.snapshot.paramMap.get('id');
+    this.websocketService._connect();
     this.selectPlace(-1, -1, -1);
   }
 
@@ -63,44 +67,45 @@ export class SchedulePlaceComponent implements OnInit {
     if (confirm === -1) {
       this.places = [];
     }
-    this.scheduleService.selectPlace(param).subscribe(value => {
-      this.placesForSchedule = value.placesForSchedule;
-      for (let row = 0; row < hall.row; row++) {
-        for (let place = 0; place < hall.place; place++) {
-          if (this.placesForSchedule[row][place] === 1) {
-            const selectedPlace: PlaceSimple = {row, place};
-            if (confirm === 1) { // нажата кнопка заказа.Нужно перепроверить, что время брони мест не вышла
-              if (this.places[this.ticketCount].row !== row || this.places[this.ticketCount].place !== place) {
-                verifyOrder = false;
-              }
-            } else {
-              this.places.push(selectedPlace);
-            }
-            this.ticketCount++;
-          }
-        }
-      }
-      this.price = this.ticketCount * this.schedule.price;
-      console.log(this.places);
-      if (confirm === 1) {
-        if ((verifyOrder === true) && (this.ticketCount > 0)) {
-          this.orderConfirm();
-        } else {  // в случае неудачной проверки - время брони вышло, а пользователь остался на странице
-          this.errorMessage = 'Время брони вышло';
-          this.ticketCount = 0;
-          this.places = [];
-          for (let row = 0; row < hall.row; row++) {  // заново считаем число выбранных мест
-            for (let place = 0; place < hall.place; place++) {
-              if (this.placesForSchedule[row][place] === 1) {
-                const selectedPlace: PlaceSimple = {row, place};
-                this.places.push(selectedPlace);
-                this.ticketCount++;
-              }
-            }
-          }
-        }
-      }
-    });
+    this.websocketService._send(param);
+    // this.scheduleService.selectPlace(param).subscribe(value => {
+    //   this.placesForSchedule = value.placesForSchedule;
+    //   for (let row = 0; row < hall.row; row++) {
+    //     for (let place = 0; place < hall.place; place++) {
+    //       if (this.placesForSchedule[row][place] === 1) {
+    //         const selectedPlace: PlaceSimple = {row, place};
+    //         if (confirm === 1) { // нажата кнопка заказа.Нужно перепроверить, что время брони мест не вышла
+    //           if (this.places[this.ticketCount].row !== row || this.places[this.ticketCount].place !== place) {
+    //             verifyOrder = false;
+    //           }
+    //         } else {
+    //           this.places.push(selectedPlace);
+    //         }
+    //         this.ticketCount++;
+    //       }
+    //     }
+    //   }
+    //   this.price = this.ticketCount * this.schedule.price;
+    //   console.log(this.places);
+    //   if (confirm === 1) {
+    //     if ((verifyOrder === true) && (this.ticketCount > 0)) {
+    //       this.orderConfirm();
+    //     } else {  // в случае неудачной проверки - время брони вышло, а пользователь остался на странице
+    //       this.errorMessage = 'Время брони вышло';
+    //       this.ticketCount = 0;
+    //       this.places = [];
+    //       for (let row = 0; row < hall.row; row++) {  // заново считаем число выбранных мест
+    //         for (let place = 0; place < hall.place; place++) {
+    //           if (this.placesForSchedule[row][place] === 1) {
+    //             const selectedPlace: PlaceSimple = {row, place};
+    //             this.places.push(selectedPlace);
+    //             this.ticketCount++;
+    //           }
+    //         }
+    //       }
+    //     }
+    //   }
+    // });
     }
 
   orderConfirm() {
@@ -114,5 +119,18 @@ export class SchedulePlaceComponent implements OnInit {
       console.log(value);
       this.selectPlace(-1, -1, -1);
     });
+  }
+
+  connect() {
+    this.websocketService._connect();
+  }
+
+  disconnect() {
+    this.websocketService._disconnect();
+  }
+
+  sendMessage() {
+    this.selectPlace(-1, -1, -1);
+    // this.websocketService._send(this.testText);
   }
 }
