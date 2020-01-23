@@ -2,7 +2,10 @@
   <tr>
     <td *ngFor="let day of utilService.myDays" >
       <div class="row" >
-        <a (click)="selectDay(day.dayOfMonth, day.dayOfWeek)" class="btn btn-outline-warning mx-3">{{day.dayOfMonth}} {{day.monthName}} <br> {{day.dayOfWeekName}}</a>
+        <div *ngIf="selectedDay !== day.dayOfWeek; else noDay">
+            <a (click)="selectDay(day.dayOfMonth, day.dayOfWeek)" class="btn btn-outline-warning mx-3">{{day.dayOfMonth}} {{day.monthName}} <br> {{day.dayOfWeekName}}</a>
+        </div>
+        <ng-template #noDay><a (click)="selectDay(day.dayOfMonth, day.dayOfWeek)" class="btn btn-outline-warning mx-3 active">{{day.dayOfMonth}} {{day.monthName}} <br> {{day.dayOfWeekName}}</a></ng-template>
       </div>
     </td>
   </tr>
@@ -19,12 +22,12 @@
 
 <div class="card-columns my-2 mx-3">
   <div *ngIf="filmsWithGenreFilter.length>0; else noFilms" class="my-2 mx-3">
-    <h3>Лучшее сегодня</h3>
+    <h3>Лучшее за день</h3>
     <div *ngFor="let film of bestToday" >
       <app-film-form [value]="film"></app-film-form>
     </div>
   </div>
-  <ng-template #noFilms><h3>Нет сеансов сегодня</h3></ng-template>
+  <ng-template #noFilms><h3>Нет сеансов в выбранный день</h3></ng-template>
 </div>
 
 <div *ngIf="filmsWithGenreFilter">

@@ -5,8 +5,6 @@
   {{confirmMessage}}
 </div>
 
-
-
 <div *ngIf="editor">
   <input type="text" placeholder="id" [(ngModel)]="form.id">
   <input type="text" placeholder="Имя" [(ngModel)]="form.name">
@@ -19,20 +17,24 @@
     <div *ngFor="let genre of genreService.genres">
       <div>{{genre.name}}  <input type="checkbox" [checked]="genre.check" (change)="onChangeGenre(genre.id, genre.check)"/></div>
     </div>
-  <button (click)="updateForm()">Изменить</button>
-  <button (click)="addForm()">Добавить</button>
-  <button (click)="breakForm()">Отмена</button>
+
+    <button (click)="updateForm()">Изменить</button>
+    <button (click)="addForm()">Добавить</button>
+    <button (click)="breakForm()">Отмена</button>
+
+
 </div>
 
-<!--<img src="{{image1}}"  alt="124">-->
 
 <div  class="card-columns">
     <div *ngFor="let value of filmService.films" >
       <div class="card mt-5">
       <app-film-form [value]="value">
       </app-film-form>
-      <a class="btn btn-primary" (click)="openEditForm(value.id)">Редактировать</a>
-      <a class="btn btn-primary" (click)="delete(value.id)">Удалить</a>
+        <div *ngIf="userService.isModerator || userService.isAdmin">
+          <a class="btn btn-primary m-1" (click)="openEditForm(value.id)">Редактировать</a>
+          <a class="btn btn-primary m-1" (click)="delete(value.id)">Удалить</a>
+        </div>
       </div>
   </div>
 </div>

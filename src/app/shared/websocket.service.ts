@@ -3,6 +3,7 @@ import * as Stomp from 'stompjs';
 import * as SockJS from 'sockjs-client';
 import {PlacesInHallDto} from './schedule.service';
 import {UserService} from './user.service';
+import {SchedulePlaceComponent} from '../schedule-place/schedule-place.component';
 
 
 
@@ -17,16 +18,23 @@ export class WebsocketService {
   webSocketEndPoint = 'http://localhost:8080/ws';
   topic = '/topic/placeselectws';
   stompClient: any;
+  private schedulePlaceComponent: SchedulePlaceComponent;
 
   constructor(private userService: UserService) {
   }
+
+  setSchedulePlaceComponent(schedulePlaceComponent: SchedulePlaceComponent) {
+    this.schedulePlaceComponent = schedulePlaceComponent;
+  }
+
   _connect() {
     console.log('Initialize WebSocket Connection');
     const ws = new SockJS(this.webSocketEndPoint);
     this.stompClient = Stomp.over(ws);
     const this2 = this;
-    this2.stompClient.connect({}, function (frame) {
-      this2.stompClient.subscribe(this2.topic, function (sdkEvent) {
+    this2.stompClient.connect({}, function(frame) {
+      this2.schedulePlaceComponent.selectPlace(-1, -1, -1);
+      this2.stompClient.subscribe(this2.topic, function(sdkEvent) {
         this2.onMessageReceived(sdkEvent);
       });
     }, this.errorCallBack);
@@ -54,8 +62,9 @@ export class WebsocketService {
   onMessageReceived(message) {
     this.placesInHallDto = JSON.parse(message.body);
     const places: number[][] = this.placesInHallDto.placesForSchedule;
-    console.log(this.userService.user.id);
-    if (this.userService.user.id !== this.placesInHallDto.userId) {
+    const tempUserId = this.userService.user === null ? -1 : this.userService.user.id;
+    // проверяем, сообщение от текущего пользователя ил нет
+    if (tempUserId !== this.placesInHallDto.userId) {
       for (let i = 0; i < this.placesInHallDto.maxRow; i++) {
         for (let j = 0; j < this.placesInHallDto.maxPlace; j++) {
           if (places[i][j] === 1) {
@@ -66,7 +75,8 @@ export class WebsocketService {
         }
       }
     }
-    this.placesForSchedule = places;
+    this.schedulePlaceComponent.placesForSchedule = places;
+    this.schedulePlaceComponent.calcTicket();
   }
 
 }

@@ -1,6 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import {Film, FilmService} from '../shared/film.service';
 import {Genre, GenreService} from '../shared/genre.service';
+import {UserService} from '../shared/user.service';
 
 @Component({
   selector: 'app-film',
@@ -16,10 +17,16 @@ export class FilmComponent implements OnInit {
 
   image1 = '//img//1.jpg';
 
-  constructor(private filmService: FilmService, private genreService: GenreService) { }
+  constructor(private filmService: FilmService, private genreService: GenreService, private userService: UserService) { }
 
   ngOnInit() {
     this.filmService.getEs().subscribe();
+    if (this.userService.user === null) {
+      const id = (sessionStorage.getItem('id'));
+      if (id !== null) {
+        this.userService.getUser(id).subscribe();
+      }
+    }
   }
 
   openEditForm(id: number) {

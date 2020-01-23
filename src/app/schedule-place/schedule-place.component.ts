@@ -1,9 +1,10 @@
-import { Component, OnInit } from '@angular/core';
+import {Component, OnDestroy, OnInit} from '@angular/core';
 import {ActivatedRoute} from '@angular/router';
 import {PlacesInHallDto, Schedule, ScheduleService} from '../shared/schedule.service';
 import {UserService} from '../shared/user.service';
 import {OrderConfirmDto, OrderService} from '../shared/order.service';
 import {WebsocketService} from '../shared/websocket.service';
+import {Hall} from '../shared/hall.service';
 
 export class PlaceSimple {
   row: number;
@@ -15,15 +16,17 @@ export class PlaceSimple {
   templateUrl: './schedule-place.component.html',
   styleUrls: ['./schedule-place.component.scss']
 })
-export class SchedulePlaceComponent implements OnInit {
+export class SchedulePlaceComponent implements OnInit, OnDestroy {
 
   private scheduleId: string;
   private schedule: Schedule = null;
-  private placesForSchedule: number[][];
+  public placesForSchedule: number[][];
   private ticketCount: number;
   private price: number;
   private places: PlaceSimple[] = [];
   private errorMessage: string;
+  private confirm: number; // = -1 событие клик на место, = 1 событи клик на кнопку купить билеты
+  private hall: Hall;
   testText: string;
 
   constructor(private route: ActivatedRoute,
@@ -34,78 +37,40 @@ export class SchedulePlaceComponent implements OnInit {
 
   ngOnInit() {
     this.scheduleId = this.route.snapshot.paramMap.get('id');
+    this.websocketService.setSchedulePlaceComponent(this);
     this.websocketService._connect();
-    this.selectPlace(-1, -1, -1);
+  }
+
+  ngOnDestroy(): void {
+    this.websocketService._disconnect();
   }
 
   selectPlace(i: number, j: number, confirm: number) {
     this.errorMessage = '';
+    this.confirm = confirm;
     if (this.schedule === null) {
       this.scheduleService.getE(this.scheduleId).subscribe(value => {
-        this.selectPlaceAfterFindSchedule(this.scheduleId, i, j, confirm, value);
+        this.selectPlaceAfterFindSchedule(this.scheduleId, i, j, value);
       });
     } else {
-      this.selectPlaceAfterFindSchedule(this.scheduleId, i , j, confirm, this.schedule);
+      this.selectPlaceAfterFindSchedule(this.scheduleId, i , j, this.schedule);
     }
   }
 
-  selectPlaceAfterFindSchedule(scheduleId: string, i: number, j: number, confirm: number, schedule: Schedule) {
+  selectPlaceAfterFindSchedule(scheduleId: string, i: number, j: number, schedule: Schedule) {
     this.schedule = schedule;
-    const hall = schedule.hall;
+    this.hall = schedule.hall;
     const userId = this.userService.user === null ? -1 : this.userService.user.id;
     const param: PlacesInHallDto = {
       userId,
       scheduleId: Number(scheduleId),
       row: i,
       place: j,
-      maxRow: hall.row,
-      maxPlace: hall.place,
+      maxRow: this.hall.row,
+      maxPlace: this.hall.place,
       placesForSchedule: [],
     };
-    let verifyOrder = true;
-    this.ticketCount = 0;
-    if (confirm === -1) {
-      this.places = [];
-    }
     this.websocketService._send(param);
-    // this.scheduleService.selectPlace(param).subscribe(value => {
-    //   this.placesForSchedule = value.placesForSchedule;
-    //   for (let row = 0; row < hall.row; row++) {
-    //     for (let place = 0; place < hall.place; place++) {
-    //       if (this.placesForSchedule[row][place] === 1) {
-    //         const selectedPlace: PlaceSimple = {row, place};
-    //         if (confirm === 1) { // нажата кнопка заказа.Нужно перепроверить, что время брони мест не вышла
-    //           if (this.places[this.ticketCount].row !== row || this.places[this.ticketCount].place !== place) {
-    //             verifyOrder = false;
-    //           }
-    //         } else {
-    //           this.places.push(selectedPlace);
-    //         }
-    //         this.ticketCount++;
-    //       }
-    //     }
-    //   }
-    //   this.price = this.ticketCount * this.schedule.price;
-    //   console.log(this.places);
-    //   if (confirm === 1) {
-    //     if ((verifyOrder === true) && (this.ticketCount > 0)) {
-    //       this.orderConfirm();
-    //     } else {  // в случае неудачной проверки - время брони вышло, а пользователь остался на странице
-    //       this.errorMessage = 'Время брони вышло';
-    //       this.ticketCount = 0;
-    //       this.places = [];
-    //       for (let row = 0; row < hall.row; row++) {  // заново считаем число выбранных мест
-    //         for (let place = 0; place < hall.place; place++) {
-    //           if (this.placesForSchedule[row][place] === 1) {
-    //             const selectedPlace: PlaceSimple = {row, place};
-    //             this.places.push(selectedPlace);
-    //             this.ticketCount++;
-    //           }
-    //         }
-    //       }
-    //     }
-    //   }
-    // });
     }
 
   orderConfirm() {
@@ -132,5 +97,49 @@ export class SchedulePlaceComponent implements OnInit {
   sendMessage() {
     this.selectPlace(-1, -1, -1);
     // this.websocketService._send(this.testText);
+  }
+
+  calcTicket() {
+    let verifyOrder = true;
+    this.ticketCount = 0;
+    if (this.confirm === -1) {
+      this.places = [];
+    }
+    console.log(this.confirm);
+    for (let row = 0; row < this.hall.row; row++) {
+      for (let place = 0; place < this.hall.place; place++) {
+        if (this.placesForSchedule[row][place] === 1) {
+          const selectedPlace: PlaceSimple = {row, place};
+          if (this.confirm === 1) { // нажата кнопка заказа.Нужно перепроверить, что время брони мест не вышла
+            if (this.places[this.ticketCount].row !== row || this.places[this.ticketCount].place !== place) {
+              verifyOrder = false;
+            }
+          } else {
+            this.places.push(selectedPlace);
+          }
+          this.ticketCount++;
+        }
+      }
+    }
+    this.price = this.ticketCount * this.schedule.price;
+    console.log(this.places);
+    if (this.confirm === 1) {
+      if ((verifyOrder === true) && (this.ticketCount > 0)) {
+        this.orderConfirm();
+      } else {  // в случае неудачной проверки - время брони вышло, а пользователь остался на странице
+        this.errorMessage = 'Время брони вышло';
+        this.ticketCount = 0;
+        this.places = [];
+        for (let row = 0; row < this.hall.row; row++) {  // заново считаем число выбранных мест
+          for (let place = 0; place < this.hall.place; place++) {
+            if (this.placesForSchedule[row][place] === 1) {
+              const selectedPlace: PlaceSimple = {row, place};
+              this.places.push(selectedPlace);
+              this.ticketCount++;
+            }
+          }
+        }
+      }
+    }
   }
 }

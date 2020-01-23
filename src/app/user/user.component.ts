@@ -37,7 +37,6 @@ export class UserComponent implements OnInit {
     } else {
       this.orderService.findByUser(this.userService.user.id.toString()).subscribe(value => {
         this.orders = value;
-        console.log(value);
       });
     }
   }
