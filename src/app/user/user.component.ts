@@ -11,7 +11,8 @@ import {Order, OrderService} from '../shared/order.service';
 export class UserComponent implements OnInit {
 
   searchString = '';
-  private userForm: User = {id: null, username: null, roles: null, email: null, name: null, password: null, verifyCode: null, emailConfirmed: null};
+  private userForm: User = {id: null, username: null, roles: null, email: null, name: null,
+    password: null, verifyCode: null, emailConfirmed: null};
   private editor = false;
   private rolesForm = [false, false, false];
   private orders: Order[] = null;
@@ -31,10 +32,12 @@ export class UserComponent implements OnInit {
       const id = (sessionStorage.getItem('id'));
       if (id !== null) {
         this.userService.getUser(id).subscribe(value => {
+          this.updateUserForm(value);
           this.orderService.findByUser(value.id.toString()).subscribe(value1 => this.orders = value1);
         });
       }
     } else {
+      this.updateUserForm(this.userService.user);
       this.orderService.findByUser(this.userService.user.id.toString()).subscribe(value => {
         this.orders = value;
       });
@@ -42,33 +45,28 @@ export class UserComponent implements OnInit {
   }
 
 
-  updateUserForm() {
-    this.userForm.id = this.userService.user.id;
-    this.userForm.username = this.userService.user.username;
-    this.userForm.roles = this.userService.user.roles;
-    this.userForm.email = this.userService.user.email;
-    this.userForm.name = this.userService.user.name;
+  updateUserForm(user: User) {
+    this.userForm.id = user.id;
+    this.userForm.username = user.username;
+    this.userForm.roles = user.roles;
+    this.userForm.email = user.email;
+    this.userForm.name = user.name;
     for (let i = 0; i < this.userForm.roles.length; i++) {
       this.rolesForm[i] = this.userForm.roles[i].check;
     }
-    this.editor = true;
   }
 
   updateUser() {
-    this.userService.createOrUpdateUser(this.userForm).subscribe();
-    this.editor = false;
-  }
-
-  onChange(name: string, check: boolean) {
-    this.userForm.roles.find(value => value.name === name).check = !check;
-  }
-
-
-  breakUser() {
-    for (let i = 0; i < this.userForm.roles.length; i++) {
-       this.userForm.roles[i].check = this.rolesForm[i];
-    }
-    this.editor = false;
+    this.userService.createOrUpdateUser(this.userForm).subscribe(value => {
+      // @ts-ignore
+      if (value === true) {
+        this.confirmMessage = 'Данные изменены';
+        this.errorMessage = '';
+      } else {
+        this.confirmMessage = '';
+        this.errorMessage = 'Данные не изменены';
+      }
+    });
   }
 
   viewOrder(id: number) {

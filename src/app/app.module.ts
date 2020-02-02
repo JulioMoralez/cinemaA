@@ -21,6 +21,7 @@ import { HelloComponent } from './hello/hello.component';
 import { FilmFormComponent } from './film/film-form/film-form.component';
 import { ScheduleTimeComponent } from './schedule/schedule-time/schedule-time.component';
 import { SchedulePlaceComponent } from './schedule-place/schedule-place.component';
+import { AdminComponent } from './admin/admin.component';
 
 const appRoutes: Routes = [
   { path: '', component: HelloComponent},
@@ -33,6 +34,7 @@ const appRoutes: Routes = [
   { path: 'orders', component: OrderComponent},
   { path: 'places', component: PlaceComponent},
   { path: 'schedules', component: ScheduleComponent},
+  { path: 'admin', component: AdminComponent},
   { path: 'schedule-place/:id', component: SchedulePlaceComponent},
   { path: '**', component: HelloComponent },
 ];
@@ -56,6 +58,7 @@ const appRoutes: Routes = [
     FilmFormComponent,
     ScheduleTimeComponent,
     SchedulePlaceComponent,
+    AdminComponent,
   ],
   imports: [
     BrowserModule,

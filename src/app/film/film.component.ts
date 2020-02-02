@@ -15,8 +15,6 @@ export class FilmComponent implements OnInit {
   errorMessage: string;
   confirmMessage: string;
 
-  image1 = '//img//1.jpg';
-
   constructor(private filmService: FilmService, private genreService: GenreService, private userService: UserService) { }
 
   ngOnInit() {

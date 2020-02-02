@@ -4,50 +4,57 @@
 <div *ngIf="confirmMessage" class="alert alert-success" role="alert">
   {{confirmMessage}}
 </div>
-<div *ngIf="!editor">
-<table *ngIf="userService.user">
+
+<table class="table mt-1 mx-5" style="width: 60%; margin: 0 auto;" *ngIf="userService.user">
 <tr>
-  <th>Id</th>
-  <th>username</th>
-  <th>name</th>
-  <th>email</th>
+  <th>Логин</th>
+  <th>Имя</th>
+  <th>Почта</th>
+  <th>Роли</th>
+  <th></th>
 </tr>
-<td>{{userService.user.id}}</td>
-<td>{{userService.user.username}}</td>
-<td>{{userService.user.name}}</td>
-<td>{{userService.user.email}}</td>
-  <div *ngIf="!userService.user.emailConfirmed">
-    <button class="btn btn-outline-success my-2 my-sm-0 mr-5 mx-1" type="submit" (click)="verifyEmail()">Выслать ключ на почту</button>
-    <input type="text" [(ngModel)]="verifyCode"/>
-    <button class="btn btn-outline-success my-2 my-sm-0 mr-5 mx-1" type="submit" (click)="confirmCode()">Подтвердить почту</button>
-  </div>
-  <div *ngIf="userService.user.emailConfirmed">
-    <span>Почта подтверждена</span>
-  </div>
-<td *ngFor="let role of userService.user.roles"><div *ngIf="role.check">{{role.runame}}</div></td>
+<tr>
+  <td>{{userService.user.username}}</td>
+  <td><input type="text" placeholder="Имя" [(ngModel)]="userForm.name"></td>
+  <td><input type="text" placeholder="Почта" [(ngModel)]="userForm.email"></td>
+  <td> <span *ngFor="let role of userService.user.roles"><span *ngIf="role.check">{{role.runame}} </span></span></td>
+  <td><button class="btn btn-primary ml-5" (click)="updateUser()">Изменить</button></td>
+</tr>
 </table>
-<button (click)="updateUserForm()">Изменить</button>
-</div>
+
+
+  <div class="ml-5 my-2" *ngIf="!userService.user.emailConfirmed">
+    <span class="alert alert-danger" role="alert">
+      Подтвердите почту
+    </span>
+<!--    <span></span>-->
+    <button class="btn btn-primary mx-2" type="submit" (click)="verifyEmail()">Выслать ключ на почту</button>
+    <input type="text" [(ngModel)]="verifyCode"/>
+    <button class="btn btn-primary mx-2" type="submit" (click)="confirmCode()">Подтвердить почту</button>
+  </div>
+  <div class="ml-5 my-2" *ngIf="userService.user.emailConfirmed">
+        <span class="alert alert-success" role="alert">
+      Почта подтверждена
+    </span>
+  </div>
+
 <p>
 </p>
-<div *ngIf="editor">
-  <input type="text" placeholder="id" [(ngModel)]="userForm.id">
-  <input type="text" placeholder="Имя" [(ngModel)]="userForm.name">
-  <input type="text" placeholder="Почта" [(ngModel)]="userForm.email">
 
-  <div *ngFor="let role of userForm.roles">
-    <div>{{role.runame}} <input type="checkbox" [checked]="role.check" (change)="onChange(role.name, role.check)"/></div>
-  </div>
-  <button (click)="updateUser()">Изменить</button>
-  <button (click)="breakUser()">Отмена</button>
-</div>
-<span *ngFor="let order of orders">
+
+
+
+
+<div class="ml-5 mt-5">
+  <span *ngFor="let order of orders">
   <a class="btn btn-primary m-1" role="button" aria-expanded="false" (click)="viewOrder(order.id)">
     <span>{{order.schedule.film.name}} {{order.schedule.date}}</span>
   </a>
 </span>
+</div>
 
-<div *ngIf="showOrder">
+
+<div class="ml-5 mt-1" *ngIf="showOrder">
   <div *ngIf="order">
     <div>Время заказа {{order.orderTime  | date:"dd MM yyyy, HH:mm"}}</div>
     <div>Фильм {{order.schedule.film.name}}</div>

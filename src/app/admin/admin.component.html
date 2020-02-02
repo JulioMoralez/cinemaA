@@ -1,0 +1,41 @@
+<div *ngIf="errorMessage" class="alert alert-danger" role="alert">
+  {{errorMessage}}
+</div>
+<div *ngIf="confirmMessage" class="alert alert-success" role="alert">
+  {{confirmMessage}}
+</div>
+
+<div *ngIf="editor">
+  <input type="hidden" placeholder="id" [(ngModel)]="form.id">
+  <h3 class="mt-1 mx-5">{{form.username}}</h3>
+  <div class="mx-5">
+    <span *ngFor="let role of form.roles">
+      <span>{{role.runame}}  <input class="mr-5" type="checkbox" [checked]="role.check" (change)="onChangeRole(role.name, role.check)"/></span>
+    </span>
+    <button class="btn btn-primary m-1" (click)="updateForm()">Изменить</button>
+    <button class="btn btn-primary m-1" (click)="breakForm()">Отмена</button>
+  </div>
+</div>
+
+<table class="table m-5">
+  <tr>
+    <th>id</th>
+    <th>Логин</th>
+    <th>Имя</th>
+    <th>Почта</th>
+    <th>Роли</th>
+  </tr>
+    <tr *ngFor="let user of users" >
+      <td>{{user.id}} </td>
+      <td>{{user.username}} </td>
+      <td>{{user.name}} </td>
+      <td>{{user.email}} </td>
+      <td>
+      <span *ngFor="let role of user.roles">
+        <span *ngIf="role.check">{{role.runame}} </span>
+      </span>
+      </td>
+      <a class="btn btn-primary m-1" (click)="openEditForm(user.id)">Редактировать</a>
+    </tr>
+</table>
+
