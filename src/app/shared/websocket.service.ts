@@ -4,6 +4,7 @@ import * as SockJS from 'sockjs-client';
 import {PlacesInHallDto} from './schedule.service';
 import {UserService} from './user.service';
 import {SchedulePlaceComponent} from '../schedule-place/schedule-place.component';
+import * as prop from './globals';
 
 
 
@@ -15,7 +16,7 @@ export class WebsocketService {
   public placesInHallDto: PlacesInHallDto = null;
   public placesForSchedule: number[][] = [];
 
-  webSocketEndPoint = 'http://localhost:8080/ws';
+  webSocketEndPoint = prop.springapp + '/ws';
   topic = '/topic/placeselectws';
   stompClient: any;
   private schedulePlaceComponent: SchedulePlaceComponent;

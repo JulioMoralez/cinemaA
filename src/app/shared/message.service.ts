@@ -2,7 +2,7 @@ import {Injectable, NgModule} from '@angular/core';
 import {HttpClient, HttpHeaders, HttpParams} from '@angular/common/http';
 import {Observable} from 'rxjs';
 import {tap} from 'rxjs/operators';
-import {Film} from './film.service';
+import * as prop from './globals';
 
 export class Message {
   constructor(
@@ -17,7 +17,7 @@ export class Message {
 })
 export class MessageService {
 
-  public url = 'http://localhost:8080/message';
+  public url = prop.springapp + '/message';
   public message: Message = null;
   public messages: Message[] = null;
 

@@ -3,6 +3,7 @@ import {HttpClient, HttpHeaders, HttpParams} from '@angular/common/http';
 import {Observable} from 'rxjs';
 import {tap} from 'rxjs/operators';
 import {Genre} from './genre.service';
+import * as prop from './globals';
 
 
 
@@ -24,7 +25,7 @@ export class Film {
 })
 export class FilmService {
 
-  public url = 'http://localhost:8080/film';
+  public url = prop.springapp + '/film';
   public film: Film = null;
   public films: Film[] = null;
   public filmsDay: Film[][] = [];

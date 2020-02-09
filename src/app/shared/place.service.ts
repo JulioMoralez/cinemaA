@@ -2,7 +2,7 @@ import {Injectable, NgModule} from '@angular/core';
 import {HttpClient, HttpHeaders, HttpParams} from '@angular/common/http';
 import {Observable} from 'rxjs';
 import {tap} from 'rxjs/operators';
-import {Film} from './film.service';
+import * as prop from './globals';
 
 export class Place {
   constructor(
@@ -18,7 +18,7 @@ export class Place {
 })
 export class PlaceService {
 
-  public url = 'http://localhost:8080/place';
+  public url = prop.springapp + '/place';
   public place: Place = null;
   public places: Place[] = null;
 

@@ -4,9 +4,9 @@ import {Observable} from 'rxjs';
 import {tap} from 'rxjs/operators';
 import {Film} from './film.service';
 import {Hall} from './hall.service';
-import {formatDate} from '@angular/common';
 import {UtilService} from './util.service';
 import {UserService} from './user.service';
+import * as prop from './globals';
 
 export class Schedule {
   constructor(
@@ -38,7 +38,7 @@ export class PlacesInHallDto {
 })
 export class ScheduleService {
 
-  public url = 'http://localhost:8080/schedule';
+  public url = prop.springapp + '/schedule';
   public schedule: Schedule = null;
   public schedules: Schedule[] = null;
   public schedulesToday: Schedule[] = null;

@@ -2,6 +2,7 @@ import {Injectable, NgModule} from '@angular/core';
 import {HttpClient, HttpHeaders, HttpParams} from '@angular/common/http';
 import {Observable} from 'rxjs';
 import {tap} from 'rxjs/operators';
+import * as prop from './globals';
 
 export class Genre {
   constructor(
@@ -17,7 +18,7 @@ export class Genre {
 })
 export class GenreService {
 
-  public url = 'http://localhost:8080/genre';
+  public url = prop.springapp + '/genre';
   public genre: Genre = null;
   public genres: Genre[] = null;
 

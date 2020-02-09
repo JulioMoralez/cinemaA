@@ -5,6 +5,7 @@ import {tap} from 'rxjs/operators';
 import {User} from './user.service';
 import {Schedule} from './schedule.service';
 import {Place} from './place.service';
+import * as prop from './globals';
 
 
 export class OrderConfirmDto {
@@ -34,7 +35,7 @@ export class Order {
 })
 export class OrderService {
 
-  public url = 'http://localhost:8080/order';
+  public url = prop.springapp + '/order';
   public order: Order = null;
   public orders: Order[] = null;
 

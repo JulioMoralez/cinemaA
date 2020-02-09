@@ -2,6 +2,7 @@ import {Injectable, NgModule} from '@angular/core';
 import {HttpClient, HttpHeaders, HttpParams} from '@angular/common/http';
 import {Observable} from 'rxjs';
 import {tap} from 'rxjs/operators';
+import * as prop from './globals';
 
 export class Hall {
   constructor(
@@ -18,7 +19,7 @@ export class Hall {
 })
 export class HallService {
 
-  public url = 'http://localhost:8080/hall';
+  public url = prop.springapp + '/hall';
   public hall: Hall = null;
   public halls: Hall[] = null;
 

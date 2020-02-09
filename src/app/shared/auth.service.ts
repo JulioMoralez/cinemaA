@@ -3,6 +3,7 @@ import {HttpClient, HttpHeaders} from '@angular/common/http';
 import {User, UserService} from './user.service';
 import {map, tap} from 'rxjs/operators';
 import {Observable} from 'rxjs';
+import * as prop from './globals';
 
 @Injectable({
   providedIn: 'root'
@@ -17,7 +18,7 @@ export class AuthService {
 
   authenticate(username, password): Observable<User> {
     const headers = new HttpHeaders({ Authorization: 'Basic ' + btoa(username + ':' + password) });
-    return this.httpClient.get<User>('http://localhost:8080/validateLogin', {headers}).pipe(
+    return this.httpClient.get<User>( prop.springapp + '/validateLogin', {headers}).pipe(
       tap(
         userData => {
           sessionStorage.setItem('id', userData.id.toString());

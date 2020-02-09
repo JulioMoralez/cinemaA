@@ -2,7 +2,7 @@ import {Component, Injectable} from '@angular/core';
 import {HttpClient, HttpHeaders} from '@angular/common/http';
 import {Observable} from 'rxjs';
 import {tap} from 'rxjs/operators';
-import {Genre} from './genre.service';
+import * as prop from './globals';
 
 export class MyDay {
   constructor(
@@ -20,7 +20,7 @@ export class MyDay {
 })
 export class UtilService {
 
-  public url = 'http://localhost:8080/util';
+  public url = prop.springapp + '/util';
   public myDays: MyDay[] = null;
 
   constructor( private http: HttpClient) {
