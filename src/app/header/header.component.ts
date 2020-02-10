@@ -14,7 +14,7 @@ export class HeaderComponent implements OnInit {
   password: string;
   invalid = false;
 
-  constructor(private authService: AuthService, private userService: UserService, private router: Router) { }
+  constructor(public authService: AuthService, public userService: UserService, public router: Router) { }
 
   ngOnInit() {
     const id = (sessionStorage.getItem('id'));

@@ -11,19 +11,19 @@ import {Order, OrderService} from '../shared/order.service';
 export class UserComponent implements OnInit {
 
   searchString = '';
-  private userForm: User = {id: null, username: null, roles: null, email: null, name: null,
+ userForm: User = {id: null, username: null, roles: null, email: null, name: null,
     password: null, verifyCode: null, emailConfirmed: null};
-  private editor = false;
-  private rolesForm = [false, false, false];
-  private orders: Order[] = null;
-  private order: Order = null;
-  private showOrder = false;
-  private verifyCode: string;
+  editor = false;
+  rolesForm = [false, false, false];
+  orders: Order[] = null;
+  order: Order = null;
+  showOrder = false;
+  verifyCode: string;
   errorMessage: string;
   confirmMessage: string;
 
-  constructor(private userService: UserService,
-              private orderService: OrderService) { }
+  constructor(public userService: UserService,
+              public orderService: OrderService) { }
 
   ngOnInit() {
     this.confirmMessage = '';

@@ -25,9 +25,14 @@
 
 </div>
 
+<div class="m-2">
+  <h4 class="mx-2">Поиск фильмов</h4>
+  <input class="mx-2" type="text" placeholder="Название" [(ngModel)]="searchName"/>
+  <input class="mx-2" type="text" placeholder="Год" [(ngModel)]="searchYear"/>
+</div>
 
 <div  class="card-columns">
-    <div *ngFor="let value of filmService.films" >
+    <div *ngFor="let value of filmService.films | filmFilter:searchName:searchYear" >
       <div class="card mt-5">
       <app-film-form [value]="value">
       </app-film-form>

@@ -13,7 +13,7 @@ export class PlaceComponent implements OnInit {
   errorMessage: string;
   confirmMessage: string;
 
-  constructor(private placeService: PlaceService) { }
+  constructor(public placeService: PlaceService) { }
 
   ngOnInit() {
     this.placeService.getEs().subscribe();

@@ -11,10 +11,10 @@ import {Genre, GenreService} from '../shared/genre.service';
 })
 export class HelloComponent implements OnInit {
 
-  constructor(private scheduleService: ScheduleService,
-              private utilService: UtilService,
-              private filmService: FilmService,
-              private genreService: GenreService) { }
+  constructor(public scheduleService: ScheduleService,
+              public utilService: UtilService,
+              public filmService: FilmService,
+              public genreService: GenreService) { }
 
   selectedDay: number;
   bestToday: Film[] = [];

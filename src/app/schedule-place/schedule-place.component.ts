@@ -18,22 +18,22 @@ export class PlaceSimple {
 })
 export class SchedulePlaceComponent implements OnInit, OnDestroy {
 
-  private scheduleId: string;
-  private schedule: Schedule = null;
-  public placesForSchedule: number[][];
-  private ticketCount: number;
-  private price: number;
-  private places: PlaceSimple[] = [];
-  private errorMessage: string;
-  private confirm: number; // = -1 событие клик на место, = 1 событи клик на кнопку купить билеты
-  private hall: Hall;
+  scheduleId: string;
+  schedule: Schedule = null;
+  placesForSchedule: number[][];
+  ticketCount: number;
+  price: number;
+  places: PlaceSimple[] = [];
+  errorMessage: string;
+  confirm: number; // = -1 событие клик на место, = 1 событи клик на кнопку купить билеты
+  hall: Hall;
   testText: string;
 
-  constructor(private route: ActivatedRoute,
-              private scheduleService: ScheduleService,
-              private userService: UserService,
-              private orderService: OrderService,
-              private websocketService: WebsocketService) { }
+  constructor(public route: ActivatedRoute,
+              public scheduleService: ScheduleService,
+              public userService: UserService,
+              public orderService: OrderService,
+              public websocketService: WebsocketService) { }
 
   ngOnInit() {
     this.scheduleId = this.route.snapshot.paramMap.get('id');

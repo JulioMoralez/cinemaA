@@ -13,7 +13,7 @@ export class HallComponent implements OnInit {
   errorMessage: string;
   confirmMessage: string;
 
-  constructor(private hallService: HallService) { }
+  constructor(public hallService: HallService) { }
 
   ngOnInit() {
     this.hallService.getEs().subscribe();

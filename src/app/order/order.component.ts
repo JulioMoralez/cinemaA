@@ -13,7 +13,7 @@ export class OrderComponent implements OnInit {
   errorMessage: string;
   confirmMessage: string;
 
-  constructor(private orderService: OrderService) { }
+  constructor(public orderService: OrderService) { }
 
   ngOnInit() {
     this.orderService.getEs().subscribe();

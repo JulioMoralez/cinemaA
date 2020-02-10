@@ -22,10 +22,10 @@ export class ScheduleComponent implements OnInit {
   hours: number[] = [];
   mins: number[] = [];
 
-  constructor(private scheduleService: ScheduleService,
-              private hallService: HallService,
-              private filmService: FilmService,
-              private utilService: UtilService) { }
+  constructor(public scheduleService: ScheduleService,
+              public hallService: HallService,
+              public filmService: FilmService,
+              public utilService: UtilService) { }
 
   ngOnInit() {
     this.scheduleService.getEs().subscribe();

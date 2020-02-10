@@ -22,6 +22,7 @@ import { FilmFormComponent } from './film/film-form/film-form.component';
 import { ScheduleTimeComponent } from './schedule/schedule-time/schedule-time.component';
 import { SchedulePlaceComponent } from './schedule-place/schedule-place.component';
 import { AdminComponent } from './admin/admin.component';
+import {FilmFilterPipe} from './shared/film-filter.pipe';
 
 const appRoutes: Routes = [
   { path: '', component: HelloComponent},
@@ -59,6 +60,7 @@ const appRoutes: Routes = [
     ScheduleTimeComponent,
     SchedulePlaceComponent,
     AdminComponent,
+    FilmFilterPipe
   ],
   imports: [
     BrowserModule,

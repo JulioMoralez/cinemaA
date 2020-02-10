@@ -9,8 +9,8 @@ import {Film} from '../shared/film.service';
 })
 export class AdminComponent implements OnInit {
 
-  private users: User[];
-  private form: User = {id: null, username: null, roles: null, name: null,
+  users: User[];
+  form: User = {id: null, username: null, roles: null, name: null,
     email: null, emailConfirmed: null, password: null, verifyCode: null};
   editor: boolean;
   errorMessage: string;

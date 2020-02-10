@@ -9,14 +9,14 @@ import {isNumber} from 'util';
 })
 export class RegistrationComponent implements OnInit {
 
-  private users: User[];
-  private username = '';
-  private name = '';
-  private password = '';
-  private confirmPassword = '';
-  private email = '';
-  private errorMessage = '';
-  private confirmReg = '';
+  users: User[];
+  username = '';
+  name = '';
+  password = '';
+  confirmPassword = '';
+  email = '';
+  errorMessage = '';
+  confirmReg = '';
 
   constructor(private userService: UserService) { }
 

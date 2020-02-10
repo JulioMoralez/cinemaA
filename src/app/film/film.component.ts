@@ -14,8 +14,10 @@ export class FilmComponent implements OnInit {
   editor: boolean;
   errorMessage: string;
   confirmMessage: string;
+  searchName = '';
+  searchYear = '';
 
-  constructor(private filmService: FilmService, private genreService: GenreService, private userService: UserService) { }
+  constructor(public filmService: FilmService, public genreService: GenreService, public userService: UserService) { }
 
   ngOnInit() {
     this.filmService.getEs().subscribe();

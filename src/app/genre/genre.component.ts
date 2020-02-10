@@ -13,7 +13,7 @@ export class GenreComponent implements OnInit {
   errorMessage: string;
   confirmMessage: string;
 
-  constructor(private genreService: GenreService) { }
+  constructor(public genreService: GenreService) { }
 
   ngOnInit() {
     this.genreService.getEs().subscribe();
