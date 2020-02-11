@@ -9,7 +9,7 @@ import {Genre, GenreService} from '../shared/genre.service';
 export class GenreComponent implements OnInit {
 
   form: Genre = {id: null, name: null, check: null};
-  editor: boolean;
+  // editor: boolean;
   errorMessage: string;
   confirmMessage: string;
 
@@ -23,7 +23,6 @@ export class GenreComponent implements OnInit {
     const genre = this.genreService.genres.find(value => value.id === id);
     this.form.id = genre.id;
     this.form.name = genre.name;
-    this.editor = true;
     this.errorMessage = null;
     this.confirmMessage = null;
   }
@@ -51,12 +50,10 @@ export class GenreComponent implements OnInit {
         this.confirmMessage = 'Жанр добавлен';
       }
     });
-    this.editor = false;
   }
 
 
   breakForm() {
-    this.editor = false;
     this.errorMessage = null;
     this.confirmMessage = null;
   }
@@ -69,6 +66,7 @@ export class GenreComponent implements OnInit {
       } else {
         this.errorMessage = null;
         this.confirmMessage = 'Жанр удален';
+        this.form.id = null;
         for (let i = 0; i < this.genreService.genres.length; i++) {
           if (this.genreService.genres[i].id === id) {
             this.genreService.genres.splice(i, 1);

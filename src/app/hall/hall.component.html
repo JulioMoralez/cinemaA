@@ -5,25 +5,44 @@
   {{confirmMessage}}
 </div>
 
-<div *ngIf="editor">
-  <input type="text" placeholder="id" [(ngModel)]="form.id">
-  <input type="text" placeholder="Название" [(ngModel)]="form.name">
-  <input type="text" placeholder="Число рядов" [(ngModel)]="form.row">
-  <input type="text" placeholder="Число мест" [(ngModel)]="form.place">
-
-  <button (click)="updateForm()">Изменить</button>
-  <button (click)="addForm()">Добавить</button>
-  <button (click)="breakForm()">Отмена</button>
+<div class="m-1 mx-4">
+  <div class="form-group row">
+    <label for="input1" class="col-sm-2 col-form-label">Название</label>
+    <div class="col-sm-4">
+      <input type="text" class="form-control" id="input1" placeholder="Название" [(ngModel)]="form.name">
+    </div>
+  </div>
+  <div class="form-group row">
+    <label for="input2" class="col-sm-2 col-form-label">Число рядов</label>
+    <div class="col-sm-4">
+      <input type="text" class="form-control" id="input2" placeholder="Число рядов" [(ngModel)]="form.row">
+    </div>
+  </div>
+  <div class="form-group row">
+    <label for="input3" class="col-sm-2 col-form-label">Число мест</label>
+    <div class="col-sm-4">
+      <input type="text" class="form-control" id="input3" placeholder="Число мест" [(ngModel)]="form.place">
+    </div>
+  </div>
+  <div class="form-group row">
+    <label class="col-sm-2 col-form-label"></label>
+    <div class="col-sm-4">
+      <button class="btn btn-primary mx-1" [disabled]="!form.id" (click)="updateForm()">Изменить</button>
+      <button class="btn btn-primary mx-1" (click)="addForm()">Добавить</button>
+      <button class="btn btn-primary mx-1" [disabled]="!form.id" (click)="delete(form.id)">Удалить</button>
+    </div>
+  </div>
 </div>
 
-<div *ngFor="let value of hallService.halls">
-  <div class="card">
-    <div class="card-body">
-      <h5 class="card-title">Зал {{value.name}}</h5>
-      <p class="card-text">Рядов: {{value.row}}</p>
-      <p class="card-text">Мест: {{value.place}}</p>
-      <a class="btn btn-primary" (click)="openEditForm(value.id)">Редактировать</a>
-      <a class="btn btn-primary" (click)="delete(value.id)">Удалить</a>
+<div  class="card-columns mx-4 mt-4">
+  <div *ngFor="let value of hallService.halls">
+    <div [ngClass]="{'card': true, 'bg-warning': form.id === value.id, 'bg-light': form.id !== value.id}">
+      <div class="card-body">
+        <h5 class="card-title">Зал {{value.name}}</h5>
+        <p class="card-text">Рядов: {{value.row}}</p>
+        <p class="card-text">Мест: {{value.place}}</p>
+        <a class="btn btn-primary m-1" (click)="openEditForm(value.id)">Редактировать</a>
+      </div>
     </div>
   </div>
 </div>

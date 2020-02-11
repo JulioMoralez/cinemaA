@@ -5,72 +5,78 @@
   {{confirmMessage}}
 </div>
 
-<div *ngIf="editor">
-  <input type="text" placeholder="id" [(ngModel)]="form.id">
-  <input type="text" placeholder="стоимость" [(ngModel)]="form.price">
-
-  <div *ngIf="filmService.films" class="form-group">
-    <label for="labelFilm">
-      Фильм
-    </label>
-    <select id="labelFilm" name="films" [(ngModel)]="form.film.id" class="form-control">
-      <option *ngFor="let film of filmService.films"  [value]="film.id">{{film.name}}</option>
-    </select>
+<div class="m-1 mx-4">
+  <div class="form-group row">
+    <label for="input1" class="col-sm-2 col-form-label">Стоимость</label>
+    <div class="col-sm-4">
+      <input type="text" class="form-control" id="input1" placeholder="Стоимость" [(ngModel)]="form.price">
+    </div>
+  </div>
+  <div class="form-group row" *ngIf="filmService.films">
+    <label for="input2" class="col-sm-2 col-form-label">Фильм</label>
+    <div class="col-sm-4">
+      <select id="input2" name="films" [(ngModel)]="form.film.id" class="form-control">
+        <option *ngFor="let film of filmService.films"  [value]="film.id">{{film.name}}</option>
+      </select>
+    </div>
   </div>
 
-  <div *ngIf="hallService.halls" class="form-group">
-    <label for="labelHall">
-      Зал
-    </label>
-    <select id="labelHall" name="halls" [(ngModel)]="form.hall.id" class="form-control">
-      <option *ngFor="let hall of hallService.halls"  [value]="hall.id">{{hall.name}}</option>
-    </select>
+  <div class="form-group row" *ngIf="hallService.halls">
+    <label for="input3" class="col-sm-2 col-form-label">Зал</label>
+    <div class="col-sm-4">
+      <select id="input3" name="halls" [(ngModel)]="form.hall.id" class="form-control">
+        <option *ngFor="let hall of hallService.halls"  [value]="hall.id">{{hall.name}}</option>
+      </select>
+    </div>
   </div>
 
-  <div *ngIf="myDays" class="form-group">
-    <label for="labelDay">
-      День
-    </label>
-    <select id="labelDay" name="myDay" [(ngModel)]="indexDay" class="form-control">
-      <option *ngFor="let day of myDays; let i = index"  [value]="i">{{day | date: 'dd.MM.yyyy'}}</option>
-    </select>
+  <div class="form-group row" *ngIf="myDays">
+    <label for="input4" class="col-sm-2 col-form-label">День</label>
+    <div class="col-sm-4">
+      <select id="input4" name="myDay" [(ngModel)]="indexDay" class="form-control">
+        <option *ngFor="let day of myDays; let i = index"  [value]="i">{{day | date: 'dd.MM.yyyy'}}</option>
+      </select>
+    </div>
   </div>
 
-  <div *ngIf="hours" class="form-group">
-    <label for="labelHour">
-      Время начала сеанса: час
-    </label>
-    <select id="labelHour" name="hour" [(ngModel)]="hour" class="form-control">
-      <option *ngFor="let h of hours"  [value]="h">{{h}}</option>
-    </select>
+  <div class="form-group row" *ngIf="hours">
+    <label for="input5" class="col-sm-2 col-form-label">Время начала: час</label>
+    <div class="col-sm-4">
+      <select id="input5" name="hour" [(ngModel)]="hour" class="form-control">
+        <option *ngFor="let h of hours"  [value]="h">{{h}}</option>
+      </select>
+    </div>
   </div>
 
-  <div *ngIf="mins" class="form-group">
-    <label for="labelMin">
-      Время начала сеанса: мин
-    </label>
-    <select id="labelMin" name="min" [(ngModel)]="min" class="form-control">
-      <option *ngFor="let m of mins"  [value]="m">{{m}}</option>
-    </select>
+  <div class="form-group row" *ngIf="mins">
+    <label for="input6" class="col-sm-2 col-form-label">Время начала: мин</label>
+    <div class="col-sm-4">
+      <select id="input6" name="min" [(ngModel)]="min" class="form-control">
+        <option *ngFor="let m of mins"  [value]="m">{{m}}</option>
+      </select>
+    </div>
   </div>
 
-
-  <button (click)="updateForm()">Изменить</button>
-  <button (click)="addForm()">Добавить</button>
-  <button (click)="breakForm()">Отмена</button>
+  <div class="form-group row">
+    <label class="col-sm-2 col-form-label"></label>
+    <div class="col-sm-4">
+      <button class="btn btn-primary mx-1" [disabled]="!form.id" (click)="updateForm()">Изменить</button>
+      <button class="btn btn-primary mx-1" (click)="addForm()">Добавить</button>
+      <button class="btn btn-primary mx-1" [disabled]="!form.id" (click)="delete(form.id)">Удалить</button>
+    </div>
+  </div>
 </div>
 
-<div  class="card-columns">
+<div  class="card-columns mx-4 mt-4">
   <div *ngFor="let value of scheduleService.schedules">
-    <div class="card">
+    <div [ngClass]="{'card': true, 'bg-warning': form.id === value.id, 'bg-light': form.id !== value.id}">
       <div class="card-body">
         <h5 class="card-title">Фильм {{value.film.name}}</h5>
         <p class="card-text">Зал {{value.hall.name}}</p>
-        <p class="card-text"> Стоимость {{value.price}}</p>
+        <p class="card-text">Стоимость {{value.price}}</p>
         <p class="card-text">Дата {{value.date}}</p>
         <app-schedule-time [time]="value.time"></app-schedule-time>
         <a class="btn btn-primary m-1" (click)="openEditForm(value.id)">Редактировать</a>
-        <a class="btn btn-primary m-1" (click)="delete(value.id)">Удалить</a>
       </div>
     </div>
   </div>

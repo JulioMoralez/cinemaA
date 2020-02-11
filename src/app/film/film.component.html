@@ -5,24 +5,55 @@
   {{confirmMessage}}
 </div>
 
-<div *ngIf="editor">
-  <input type="text" placeholder="id" [(ngModel)]="form.id">
-  <input type="text" placeholder="Имя" [(ngModel)]="form.name">
-  <input type="text" placeholder="Год" [(ngModel)]="form.year">
-  <input type="text" placeholder="Длительность" [(ngModel)]="form.length">
-  <input type="text" placeholder="Оценка" [(ngModel)]="form.rating">
-  <input type="text" placeholder="Картинка" [(ngModel)]="form.picPath">
-  <input type="file" (change)="fileSelected($event)"/>
-  <button type="button" (click)="upload(form.id)">Картинка</button>
-    <div *ngFor="let genre of genreService.genres">
-      <div>{{genre.name}}  <input type="checkbox" [checked]="genre.check" (change)="onChangeGenre(genre.id, genre.check)"/></div>
+<div class="m-1 mx-4" *ngIf="userService.isModerator || userService.isAdmin">
+  <div class="form-group row">
+    <label for="input1" class="col-sm-2 col-form-label">Название</label>
+    <div class="col-sm-4">
+      <input type="text" class="form-control" id="input1" placeholder="Название" [(ngModel)]="form.name">
     </div>
-
-    <button (click)="updateForm()">Изменить</button>
-    <button (click)="addForm()">Добавить</button>
-    <button (click)="breakForm()">Отмена</button>
-
-
+  </div>
+  <div class="form-group row">
+    <label for="input2" class="col-sm-2 col-form-label">Год</label>
+    <div class="col-sm-4">
+      <input type="text" class="form-control" id="input2" placeholder="Год" [(ngModel)]="form.year">
+    </div>
+  </div>
+  <div class="form-group row">
+    <label for="input3" class="col-sm-2 col-form-label">Длительность</label>
+    <div class="col-sm-4">
+      <input type="text" class="form-control" id="input3" placeholder="Длительность" [(ngModel)]="form.length">
+    </div>
+  </div>
+  <div class="form-group row">
+    <label for="input4" class="col-sm-2 col-form-label">Оценка</label>
+    <div class="col-sm-4">
+      <input type="text" class="form-control" id="input4" placeholder="Оценка" [(ngModel)]="form.rating">
+    </div>
+  </div>
+  <div class="form-group row">
+    <label class="col-sm-2 col-form-label">Постер</label>
+    <div class="col-sm-4">
+      <input type="text" placeholder="Имя файла" [(ngModel)]="form.picPath">
+      <input type="file" (change)="fileSelected($event)"/>
+      <button type="button" (click)="upload(form.id)">Добавить изображение</button>
+    </div>
+  </div>
+  <div class="form-group row">
+    <label for="input4" class="col-sm-2 col-form-label">Жанры</label>
+    <div class="col-sm-4">
+      <div *ngFor="let genre of genreService.genres">
+        <div>{{genre.name}}  <input type="checkbox" [checked]="genre.check" (change)="onChangeGenre(genre.id, genre.check)"/></div>
+      </div>
+    </div>
+  </div>
+  <div class="form-group row">
+    <label class="col-sm-2 col-form-label"></label>
+    <div class="col-sm-4">
+      <button class="btn btn-primary mx-1" [disabled]="!form.id" (click)="updateForm()">Изменить</button>
+      <button class="btn btn-primary mx-1" (click)="addForm()">Добавить</button>
+      <button class="btn btn-primary mx-1" [disabled]="!form.id" (click)="delete(form.id)">Удалить</button>
+    </div>
+  </div>
 </div>
 
 <div class="m-2">
@@ -31,16 +62,14 @@
   <input class="mx-2" type="text" placeholder="Год" [(ngModel)]="searchYear"/>
 </div>
 
-<div  class="card-columns">
-    <div *ngFor="let value of filmService.films | filmFilter:searchName:searchYear" >
-      <div class="card mt-5">
-      <app-film-form [value]="value">
-      </app-film-form>
+<div  class="card-columns mx-4 mt-4">
+  <div *ngFor="let value of filmService.films | filmFilter:searchName:searchYear">
+    <div [ngClass]="{'card': true, 'bg-warning': form.id === value.id, 'bg-light': form.id !== value.id}">
+        <app-film-form [value]="value">
+        </app-film-form>
         <div *ngIf="userService.isModerator || userService.isAdmin">
           <a class="btn btn-primary m-1" (click)="openEditForm(value.id)">Редактировать</a>
-          <a class="btn btn-primary m-1" (click)="delete(value.id)">Удалить</a>
         </div>
-      </div>
   </div>
 </div>
 

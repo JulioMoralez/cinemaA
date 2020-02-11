@@ -9,7 +9,7 @@ import {Hall, HallService} from '../shared/hall.service';
 export class HallComponent implements OnInit {
 
   form: Hall = {id: null, name: null, row: null, place: null};
-  editor: boolean;
+  // editor: boolean;
   errorMessage: string;
   confirmMessage: string;
 
@@ -25,7 +25,6 @@ export class HallComponent implements OnInit {
     this.form.name = film.name;
     this.form.row = film.row;
     this.form.place = film.place;
-    this.editor = true;
     this.errorMessage = null;
     this.confirmMessage = null;
   }
@@ -53,12 +52,10 @@ export class HallComponent implements OnInit {
         this.confirmMessage = 'Зал добавлен';
       }
     });
-    this.editor = false;
   }
 
 
   breakForm() {
-    this.editor = false;
     this.errorMessage = null;
     this.confirmMessage = null;
   }
@@ -71,6 +68,7 @@ export class HallComponent implements OnInit {
       } else {
         this.errorMessage = null;
         this.confirmMessage = 'Зал удален';
+        this.form.id = null;
         for (let i = 0; i < this.hallService.halls.length; i++) {
           if (this.hallService.halls[i].id === id) {
             this.hallService.halls.splice(i, 1);

@@ -5,20 +5,30 @@
   {{confirmMessage}}
 </div>
 
-<div *ngIf="editor">
-  <input type="text" placeholder="id" [(ngModel)]="form.id">
-  <input type="text" placeholder="Название" [(ngModel)]="form.name">
-  <button (click)="updateForm()">Изменить</button>
-  <button (click)="addForm()">Добавить</button>
-  <button (click)="breakForm()">Отмена</button>
+<div class="m-1 mx-4">
+  <div class="form-group row">
+    <label for="input1" class="col-sm-2 col-form-label">Название</label>
+    <div class="col-sm-4">
+      <input type="text" class="form-control" id="input1" placeholder="Название" [(ngModel)]="form.name">
+    </div>
+  </div>
+  <div class="form-group row">
+    <label class="col-sm-2 col-form-label"></label>
+    <div class="col-sm-4">
+      <button class="btn btn-primary mx-1" [disabled]="!form.id" (click)="updateForm()">Изменить</button>
+      <button class="btn btn-primary mx-1" (click)="addForm()">Добавить</button>
+      <button class="btn btn-primary mx-1" [disabled]="!form.id" (click)="delete(form.id)">Удалить</button>
+    </div>
+  </div>
 </div>
 
-<div *ngFor="let value of genreService.genres">
-  <div class="card">
-    <div class="card-body">
-      <h5 class="card-title">{{value.name}}</h5>
-      <a class="btn btn-primary" (click)="openEditForm(value.id)">Редактировать</a>
-      <a class="btn btn-primary" (click)="delete(value.id)">Удалить</a>
+<div  class="card-columns mx-4 mt-4">
+  <div *ngFor="let value of genreService.genres">
+    <div [ngClass]="{'card': true, 'bg-warning': form.id === value.id, 'bg-light': form.id !== value.id}">
+      <div class="card-body">
+        <h5 class="card-title">{{value.name}}</h5>
+        <a class="btn btn-primary m-1" (click)="openEditForm(value.id)">Редактировать</a>
+      </div>
     </div>
   </div>
 </div>

@@ -11,7 +11,7 @@ import {UserService} from '../shared/user.service';
 export class FilmComponent implements OnInit {
 
   form: Film = {id: null, name: null, year: null, genres: null, length: null, picPath: null, rating: null};
-  editor: boolean;
+  // editor: boolean;
   errorMessage: string;
   confirmMessage: string;
   searchName = '';
@@ -27,6 +27,14 @@ export class FilmComponent implements OnInit {
         this.userService.getUser(id).subscribe();
       }
     }
+    if (this.genreService.genres === null) {
+      this.genreService.getEs().subscribe(value => {
+        this.genreService.genres = value;
+        this.fillGenres([]);
+      });
+    } else {
+      this.fillGenres([]);
+    }
   }
 
   openEditForm(id: number) {
@@ -37,15 +45,7 @@ export class FilmComponent implements OnInit {
     this.form.length = film.length;
     this.form.picPath = film.picPath;
     this.form.rating = film.rating;
-    this.editor = true;
-    if (this.genreService.genres === null) {
-      this.genreService.getEs().subscribe(value => {
-        this.genreService.genres = value;
-        this.fillGenres(film.genres);
-      });
-    } else {
-      this.fillGenres(film.genres);
-    }
+    this.fillGenres(film.genres);
     this.errorMessage = null;
     this.confirmMessage = null;
   }
@@ -100,12 +100,10 @@ export class FilmComponent implements OnInit {
         this.confirmMessage = 'Фильм добавлен';
       }
     });
-    this.editor = false;
   }
 
 
   breakForm() {
-    this.editor = false;
     this.errorMessage = null;
     this.confirmMessage = null;
   }
@@ -118,6 +116,7 @@ export class FilmComponent implements OnInit {
       } else {
         this.errorMessage = null;
         this.confirmMessage = 'Фильм удален';
+        this.form.id = null;
         for (let i = 0; i < this.filmService.films.length; i++) {
           if (this.filmService.films[i].id === id) {
             this.filmService.films.splice(i, 1);

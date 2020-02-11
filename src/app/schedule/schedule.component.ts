@@ -12,7 +12,7 @@ import {MyDay, UtilService} from '../shared/util.service';
 export class ScheduleComponent implements OnInit {
 
   form: Schedule = {id: null, film: null, hall: null, time: null, date: null, price: null};
-  editor: boolean;
+  // editor: boolean;
   errorMessage: string;
   confirmMessage: string;
   myDays: Date[] = [];
@@ -29,21 +29,41 @@ export class ScheduleComponent implements OnInit {
 
   ngOnInit() {
     this.scheduleService.getEs().subscribe();
-    if (this.hallService.halls === null) {
-      this.hallService.getEs().subscribe();
-    }
     if (this.filmService.films === null) {
-      this.filmService.getEs().subscribe();
+      this.filmService.getEs().subscribe(value => {
+        if (value.length > 0) {
+          this.form.film = value[0];
+        }
+      });
+    } else {
+      if (this.filmService.films.length > 0) {
+        this.form.film = this.filmService.films[0];
+      }
+    }
+    if (this.hallService.halls === null) {
+      this.hallService.getEs().subscribe(value => {
+        if (value.length > 0) {
+          this.form.hall = value[0];
+        }
+      });
+    } else {
+      if (this.hallService.halls.length > 0) {
+        this.form.hall = this.hallService.halls[0];
+      }
     }
     if (this.utilService.myDays === null) {
       this.utilService.getDays().subscribe();
     }
+    this.form.date = new Date();
+    this.fillDays();
     for (let i = 10; i <= 23; i++) {
       this.hours.push(i);
     }
+    this.hour = 10;
     for (let i = 0; i <= 55; i = i + 5) {
       this.mins.push(i);
     }
+    this.min = 0;
   }
 
   openEditForm(id: number) {
@@ -56,20 +76,8 @@ export class ScheduleComponent implements OnInit {
     this.hour = Math.floor(this.form.time / 60);
     this.min = this.form.time % 60;
 
-
     this.form.date = new Date(schedule.date);
-
-    this.myDays = [];
-    for (let i = 0; i < 7; i++) {
-      const now = new Date();
-      now.setDate(now.getDate() + i);
-      this.myDays.push(now);
-      if ((now.getFullYear() === this.form.date.getFullYear()) &&
-        (now.getDate() === this.form.date.getDate()) &&
-        (now.getMonth() === this.form.date.getMonth())) {
-          this.indexDay = i;
-      }
-    }
+    this.fillDays();
     if ((this.form.date < this.myDays[0]) && (this.form.date.getDay() !== this.myDays[0].getDay())) {
       this.myDays.unshift(schedule.date);
       this.indexDay = 0;
@@ -79,9 +87,22 @@ export class ScheduleComponent implements OnInit {
     }
 
 
-    this.editor = true;
     this.errorMessage = null;
     this.confirmMessage = null;
+  }
+
+  fillDays() {
+    this.myDays = [];
+    for (let i = 0; i < 7; i++) {
+      const now = new Date();
+      now.setDate(now.getDate() + i);
+      this.myDays.push(now);
+      if ((now.getFullYear() === this.form.date.getFullYear()) &&
+        (now.getDate() === this.form.date.getDate()) &&
+        (now.getMonth() === this.form.date.getMonth())) {
+        this.indexDay = i;
+      }
+    }
   }
 
   updateForm() {
@@ -96,28 +117,23 @@ export class ScheduleComponent implements OnInit {
   addOrUpdateForm() {
     this.form.date = this.myDays[this.indexDay];
     this.form.time = Number(this.hour) * 60 + Number(this.min);
-    console.log(this.hour);
-    console.log(this.min);
-    console.log(this.form.time);
     this.scheduleService.addOrUpdate(this.form).subscribe(value => {
       this.confirmMessage = null;
       for (let i = 0; i < this.scheduleService.schedules.length; i++) {
         if (this.scheduleService.schedules[i].id === value.id) {
-          this.scheduleService.schedules[i] = value;
-          this.confirmMessage = 'Данные фильма изменены';
+          this.confirmMessage = 'Данные сеанса изменены';
         }
       }
       if (this.confirmMessage === null) {
-        this.scheduleService.schedules.push(value);
-        this.confirmMessage = 'Фильм добавлен';
+        this.confirmMessage = 'Сеанс добавлен';
       }
+      // обновляем все сеансы с сервера. Чтобы самомтоятельно не заполнять объекты film и hall в scheduleService.schedules
+      this.scheduleService.getEs().subscribe();
     });
-    this.editor = false;
   }
 
 
   breakForm() {
-    this.editor = false;
     this.errorMessage = null;
     this.confirmMessage = null;
   }
@@ -129,7 +145,8 @@ export class ScheduleComponent implements OnInit {
         this.confirmMessage = null;
       } else {
         this.errorMessage = null;
-        this.confirmMessage = 'Фильм удален';
+        this.confirmMessage = 'Сеанс удален';
+        this.form.id = null;
         for (let i = 0; i < this.scheduleService.schedules.length; i++) {
           if (this.scheduleService.schedules[i].id === id) {
             this.scheduleService.schedules.splice(i, 1);
