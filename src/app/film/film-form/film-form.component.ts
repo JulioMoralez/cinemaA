@@ -10,7 +10,7 @@ import * as prop from '../../shared/globals';
 export class FilmFormComponent implements OnInit {
 
   @Input() value: Film;
-  public url = prop.springapp + '/img/';
+  public url = prop.s3path + '/';
 
   constructor() { }
 
